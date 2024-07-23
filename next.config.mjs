@@ -11,7 +11,7 @@ const nextConfig = {
         ],
         unoptimized: false
     },
-    // output: "export"
+    // output: "export" 
 };
 
 export default nextConfig;
