@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* search bar */
+
+.searchBar .relative label {
+    display: none !important;
+}
+
+
+/* slider Auto Play*/
+.slider-containerAutoPlay .slick-slide>div {
+    margin: 0 10px;
+}
+
+.custom-gradient {
+    @apply bg-gradient-to-b;
+    background: linear-gradient(180deg, hsla(180, 1%, 85%, .2), rgba(73, 74, 75, .2), hsla(180, 1%, 85%, .2));
+}
+.custom-gradient:hover{
+    @apply bg-gradient-to-b;
+    background: linear-gradient(180deg,rgba(73,74,75,.1),#106390,rgba(73,74,75,.1));
+}
+
+.BlogIndex_postAuthor__NyWX4:before {
+    position: absolute;
+    content: attr(data-by);
+    font-family: Pacifico, cursive;
+    color: #1d3d5770;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-top: -1rem;
+    -webkit-margin-start: -8px;
+    margin-inline-start: -8px;
+    filter: drop-shadow(0 0 1px #656565);
+    z-index: 0;
+}

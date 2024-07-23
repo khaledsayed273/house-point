@@ -1,0 +1,29 @@
+{
+  "name": "house-point",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@formatjs/intl-localematcher": "^0.5.4",
+    "@heroicons/react": "^2.1.5",
+    "@material-tailwind/react": "^2.1.9",
+    "negotiator": "^0.6.3",
+    "next": "14.2.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-slick": "^0.30.2",
+    "sharp": "^0.33.4",
+    "slick-carousel": "^1.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
