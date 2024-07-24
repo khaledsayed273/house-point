@@ -1,18 +1,8 @@
 "use client"
-import dynamic from 'next/dynamic';
+import { Dialog, DialogBody, DialogHeader } from '@material-tailwind/react';
 import Image from 'next/image'
 import React, { useState } from 'react'
-const Dialog = dynamic(() => import('@material-tailwind/react').then(mod => mod.Dialog), {
-    ssr: false,
-});
 
-const DialogHeader = dynamic(() => import('@material-tailwind/react').then(mod => mod.DialogHeader), {
-    ssr: false,
-});
-
-const DialogBody = dynamic(() => import('@material-tailwind/react').then(mod => mod.DialogBody), {
-    ssr: false,
-});
 
 function MoreImages({ details }) {
 
