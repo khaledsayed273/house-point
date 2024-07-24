@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import LanguageSwitcher from './LanguageSwitcher';
-import logo from "../../../../../public/images/HPlogo.png"
+import logo from "../../../../../public/images/HPlogo.webp"
 import SearchForm from './SearchForm';
 import Logged from './Logged';
 
@@ -54,8 +54,9 @@ function Navbar({ translate, lang }) {
                     <Link onClick={() => setShowNav(false)} className='transition-all h-[55px] w-[170px] md:w-[220px] relative md:h-[70px] duration-300 hover:scale-90' href={`/${lang}`}>
                         <Image
                             priority
-                            fill
                             src={logo}
+                            width={170}
+                            height={55}
                             alt='logo'
                             sizes="(min-width: 808px) 50vw, 100vw"
                         />
