@@ -91,7 +91,13 @@ async function page({ params }) {
                                     <Image priority src={details.property.images[0].image} alt="1" sizes="(min-width: 808px) 50vw, 100vw" fill />
                                 </div>
                                 <div className="relative row-span-2">
-                                    <Image blurDataURL={details.property.images[1].placeholder} placeholder='blur' src={details.property.images[1].image} alt="2" sizes="(min-width: 808px) 50vw, 100vw" fill />
+                                    <Image
+                                        blurDataURL={details.property.images[1].placeholder}
+                                        placeholder='blur'
+                                        src={details.property.images[1].image}
+                                        alt="2"
+                                        quality={30}
+                                        sizes="(min-width: 808px) 50vw, 100vw" fill />
                                 </div>
                                 <MoreImages details={details.property} />
                             </div>
