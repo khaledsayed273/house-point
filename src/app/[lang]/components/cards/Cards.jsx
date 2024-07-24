@@ -56,10 +56,10 @@ function Cards({ lang, item, translate }) {
 
                             <div className='flex flex-col items-center gap-3 px-2 py-2 text-xs font-bold tracking-wider text-white transition-all bg-opacity-50 font-openSans bg-custom-blue'>
                                 <div className='w-full flex justify-start items-center'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                                    {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                    </svg>
+                                    </svg> */}
                                     <span className='text-sm ms-1'>{item.areaLocation.name} , {item.subarea.name}</span>
                                 </div>
                                 <div className='w-full flex justify-end gap-1 text-xs font-bold text-white transition-colors duration-200 transform'>
