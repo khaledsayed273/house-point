@@ -2,10 +2,12 @@ import React from 'react'
 import Form from './components/Form'
 import SlickAutoPlay from '@/app/[lang]/components/SlickAutoPlay'
 import Description from './components/Description'
-import MoreImages from './components/MoreImages'
 import Image from 'next/image'
 import { getDictionary } from '@/app/[lang]/dictionaries'
-
+import dynamic from 'next/dynamic'
+const MoreImages = dynamic(() => import('./components/MoreImages'), {
+    ssr: false,
+});
 export async function generateMetadata({ params }) {
     const baseUrl = process.env.baseUrl;
     try {
@@ -91,13 +93,7 @@ async function page({ params }) {
                                     <Image priority src={details.property.images[0].image} alt="1" sizes="(min-width: 808px) 50vw, 100vw" fill />
                                 </div>
                                 <div className="relative row-span-2">
-                                    <Image
-                                        blurDataURL={details.property.images[1].placeholder}
-                                        placeholder='blur'
-                                        src={details.property.images[1].image}
-                                        alt="2"
-                                        quality={30}
-                                        sizes="(min-width: 808px) 50vw, 100vw" fill />
+                                    <Image blurDataURL={details.property.images[1].placeholder} placeholder='blur' src={details.property.images[1].image} alt="2" sizes="(min-width: 808px) 50vw, 100vw" fill />
                                 </div>
                                 <MoreImages details={details.property} />
                             </div>
