@@ -2,12 +2,10 @@ import React from 'react'
 import Form from './components/Form'
 import SlickAutoPlay from '@/app/[lang]/components/SlickAutoPlay'
 import Description from './components/Description'
+import MoreImages from './components/MoreImages'
 import Image from 'next/image'
 import { getDictionary } from '@/app/[lang]/dictionaries'
-import dynamic from 'next/dynamic'
-const MoreImages = dynamic(() => import('./components/MoreImages'), {
-    ssr: false,
-});
+
 export async function generateMetadata({ params }) {
     const baseUrl = process.env.baseUrl;
     try {
