@@ -26,6 +26,7 @@ function Cards({ lang, item, translate }) {
                             alt={item.title}
                             placeholder='blur'
                             fill
+                            quality={30}
                             sizes="(min-width: 808px) 50vw, 100vw"
                             title={item.title}
                         />
