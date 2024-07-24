@@ -91,8 +91,8 @@ export default async function Home({ params }) {
         <>
           <h2 className="text-center my-5 md:text-2xl font-semibold">{translate.pages.home.titleRent}</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 px-2 md:px-5 xl:px-10 my-10">
-            {data.rent.map(item => (
-              <Cards key={item.slug} lang={params.lang} item={item} translate={translate} />
+            {data.rent.map((item , index) => (
+              <Cards key={index} lang={params.lang} item={item} translate={translate} />
             ))}
           </div>
           <div className="flex justify-center items-center ">
@@ -100,9 +100,9 @@ export default async function Home({ params }) {
           </div>
           <h2 className="text-center my-5 md:text-2xl font-semibold">{translate.pages.home.titleSale}</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 px-2 md:px-5 xl:px-10 my-10">
-            {data.sale.map(item => (
-              <Cards key={item.slug} lang={params.lang} item={item} translate={translate} />
-            ))}
+            {/* {data.sale.map((item , index) => (
+              <Cards key={index} lang={params.lang} item={item} translate={translate} />
+            ))} */}
           </div>
           <div className="flex justify-center items-center ">
             <Link className="mx-auto text-sm md:text-xl text-white bg-black  py-3 px-4 rounded-md hover:opacity-80" href={`${params.lang}/sale/properties`}>{translate.pages.home.exploreMoreSale}</Link>
@@ -110,9 +110,9 @@ export default async function Home({ params }) {
           <div className="container mx-auto my-10">
             <h3 className="text-center my-5 text-xl font-semibold">LATEST BLOGS</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7 mt-10">
-              {data.articles.map((item, index) => (
+              {/* {data.articles.map((item, index) => (
                 <Articles key={index} item={item} translate={translate} lang={params.lang} />
-              ))}
+              ))} */}
             </div>
           </div>
         </>

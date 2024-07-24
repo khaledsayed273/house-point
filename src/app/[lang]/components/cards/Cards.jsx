@@ -8,15 +8,18 @@ import couchflatImg from "../../../../../public/assets/couchflat.png"
 import MediaCards from './MediaCards'
 
 
-function Cards({lang, item, translate }) {
+function Cards({ lang, item, translate }) {
+
+    const linkHref = `/${lang}/${item.type === "إيجار" || item.type === "rent" ? "rent" : "sale"}/${item.category.slug.toLowerCase()}/${item.areaLocation.slug.toLowerCase()}/${item.subarea.slug.toLowerCase()}/${item.slug}`;
+
     return (
-        <div className='flex relative flex-col overflow-hidden transition-all duration-150 ease-out bg-white rounded shadow-lg shadow-gray-300'>
-            <h3 className='flex items-center justify-center h-20 px-2 py-1  text-sm  font-semibold text-center text-white text-ellipsis bg-custom-blue w-30'>
+        <div className='flex relative flex-col  bg-white rounded shadow-lg shadow-gray-300'>
+            <h3 className='flex items-center justify-center h-20 px-2 py-1  text-sm  font-semibold text-center text-white bg-custom-blue'>
                 {item.title}
             </h3>
             <div className='aspect-[3/2]'>
                 <div className='relative h-full w-full'>
-                    <Link className='relative inline-block h-full w-full' href={`/${lang}/${item.type === "إيجار" || item.type === "rent"  ? "rent" : "sale"}/${item.category.slug.toLowerCase()}/${item.areaLocation.slug.toLowerCase()}/${item.subarea.slug.toLowerCase()}/${item.slug}`}>
+                    <Link className='relative inline-block h-full w-full' href={linkHref}>
                         <Image
                             src={item.image.image}
                             blurDataURL={item.image.placeholder}
