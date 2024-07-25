@@ -186,7 +186,7 @@ function SearchBar({ baseUrl, translate, params, data, lang }) {
 
   return (
     <>
-      {!categories.length > 0 ? (
+      {categories.length > 0 ? (
 
         <div className='relative searchBar w-full md:px-4 mt-4'>
           <div className="container mx-auto">
