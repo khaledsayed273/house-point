@@ -1,29 +1,49 @@
+/* eslint-disable @next/next/inline-script-id */
 import React from 'react'
 import SearchBar from '../../components/home/header/SearchBar'
 import Section from '../../components/home/Section'
 import { getDictionary } from '../../dictionaries'
 import Pagination from '../../components/Pagination'
+import Script from 'next/script'
 
 
-export async function generateMetadata({ params }) {
-    const translate = await getDictionary(params.lang)
-
-
-
+export async function generateMetadata({ params , searchParams }) {
 
     const url = process.env.baseUrl
+
+    const ApiUrl = `${url}/properties?filter[type]=${params.type}&page=${searchParams.page}`
+
+    const Query = `${url}/metalinks?link=/${params.type}/properties`
+
     try {
-        const res = await fetch(`${url}/properties?filter[type]=${params.type}`, { headers: { "X-localization": params.lang }, cache: 'no-store' })
-        const data = await res.json()
-        const type = params.type.charAt(0).toUpperCase() + params.type.slice(1)
-        
+        const [dataResponse, metaLinkResponse] = await Promise.all([
+            fetch(`${ApiUrl}`, {
+                headers: {
+                    "X-localization": params.lang
+                },
+                cache: 'no-store'
+            }),
+            fetch(`${Query}`, {
+                headers: {
+                    "X-localization": params.lang
+                },
+                cache: 'no-store'
+            })
+        ]);
+
+        const data = await dataResponse.json();
+        const resMetaLink = await metaLinkResponse.json();
+        const metaLink = await resMetaLink.data
+        const keywords = metaLink.keywords.split(",")
+
         return {
-            title: `${data.data.meta.total} Property Types For ${type} In Cairo, Egypt`,
-            description: `${data.data.meta.total} Property Types For ${type} In Cairo, Egypt`,
+            title: `${data.data.meta.total} ${metaLink.title}`,
+            description: `${data.data.meta.total} ${metaLink.description}`,
+            keywords: keywords,
             openGraph: {
-                title: `${data.data.meta.total} Property Types For ${type} In Cairo, Egypt`,
-                // images: `${data.data.meta.total} ${type} For ${type} in Cairo Egypt`,
-                description: `${data.data.meta.total} Property Types For ${type} In Cairo, Egypt`,
+                title: `${data.data.meta.total} ${metaLink.title}`,
+                description: `${data.data.meta.total} ${metaLink.description}`,
+                keywords: keywords,
             },
         }
     } catch (e) {
@@ -38,7 +58,7 @@ export async function generateMetadata({ params }) {
     }
 }
 
-const getData = async (baseUrl, slug, lang , page) => {
+const getData = async (baseUrl, slug, lang, page) => {
 
 
     try {
@@ -57,25 +77,72 @@ const getData = async (baseUrl, slug, lang , page) => {
     }
 }
 
-async function page({ params , searchParams }) {
+async function page({ params, searchParams }) {
     const translate = await getDictionary(params.lang)
     const baseUrl = process.env.baseUrl
-    const req = await getData(baseUrl, params.type, params.lang , searchParams.page)
+    const req = await getData(baseUrl, params.type, params.lang, searchParams.page)
     const data = await req?.data
 
 
+    const itemListSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        '@id': 'mainEntity',
+        url: `${baseUrl}/${params.type}`,
+        itemListElement: data?.data?.map((property, index) => ({
+            '@type': `${property.title.slice(0, -1)}`,
+            '@id': `ReferenceNumber:${property.refNumber}`,
+            name: `${property.title}`,
+            image: `${baseUrl}/original/${property.image.image}`,
+            url: `${baseUrl}/${property.title.toLowerCase()}/${property.area.toLowerCase()}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+            tourBookingPage: `${baseUrl}/${property.title.toLowerCase()}/${property.area.toLowerCase()}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+            address: `${property.subarea.name}, ${property.area}, EG`,
+            telephone: '+201221409530',
+            floorSize: 'QuantitativeValue',
+            floorSize: 'sqm',
+        })),
+    };
+
+
+    const propertySchema = data?.data?.map((property) => ({
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        '@id': `ReferenceNumber:#${property.refNumber}`,
+        sku: `${property.refNumber}`,
+        offers: {
+            '@type': 'Offer',
+            availability: 'https://schema.org/InStock',
+            price: `${property.price}`,
+            priceCurrency: 'EGP',
+            '@id': 'HousePointEgyptOrganization',
+        },
+        aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: '5',
+        },
+    }));
 
 
 
     return (
-        <main>
-            <SearchBar lang={params.lang} baseUrl={baseUrl} data={data} params={params} translate={translate} />
-            {req?.status && (
-                <Section lang={params.lang} data={data} translate={translate} />
-            )}
-            <Pagination lang={params.lang} data={data}/>
+        <>
+            <Script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+            />
+            <Script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchema) }}
+            />
+            <main>
+                <SearchBar lang={params.lang} baseUrl={baseUrl} data={data} params={params} translate={translate} />
+                {req?.status && (
+                    <Section lang={params.lang} data={data} translate={translate} />
+                )}
+                <Pagination  data={data} />
 
-        </main>
+            </main>
+        </>
     )
 }
 

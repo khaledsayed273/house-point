@@ -5,7 +5,7 @@ import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { useRouter, useSearchParams } from 'next/navigation';
 
 
-function Pagination({ lang, data }) {
+function Pagination({ data }) {
     const searchParams = useSearchParams()
     const router = useRouter()
     let active = searchParams.get("page") ? +searchParams.get("page") : 1
@@ -22,10 +22,7 @@ function Pagination({ lang, data }) {
 
     const next = () => {
         if (active === 5) return;
-
-
         params.set("page", active + 1);
-
         router.push(`?${params.toString()}`)
     };
 
@@ -46,7 +43,7 @@ function Pagination({ lang, data }) {
                 <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
             </Button>
             <div className="flex items-center gap-2">
-                {Array.from({ length: data.meta.total_pages }).map((item, index) => (
+                {Array.from({ length: data?.meta?.total_pages }).map((item, index) => (
                     <IconButton className={`${active === index + 1 && "bg-custom-blue"}`} key={index + 1} {...getItemProps(index + 1)}>{index + 1}</IconButton>
                 ))}
             </div>
@@ -54,7 +51,7 @@ function Pagination({ lang, data }) {
                 variant="text"
                 className="flex items-center gap-2"
                 onClick={next}
-                disabled={active === data.meta.total_pages}
+                disabled={active === data?.meta?.total_pages}
             >
                 Next
                 <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />

@@ -15,29 +15,27 @@ function BedsDropdown({ lang, selectedBathrooms, selectedBedrooms, handleBedroom
             <div onClick={() => setIsOpen(false)} className={`absolute top-0 right-0 bottom-0 left-0 z-10 ${isOpen ? "block" : "hidden"}`}>
 
             </div>
-            <div className="hidden md:block relative mt-2">
-                <div>
-                    <button
-                        type="button"
-                        className="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-3 md:px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
-                        onClick={toggleDropdown}
+            <div className="hidden md:block md:w-full h-full relative mt-2">
+                <button
+                    type="button"
+                    className="inline-flex justify-between w-full h-[40px] items-center rounded-md border border-gray-300 shadow-sm px-3 md:px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+                    onClick={toggleDropdown}
+                >
+                    {selectedBedrooms} {lang === "en" ? "All Beds" : "عدد الغرف"}  & {selectedBathrooms} {lang === "en" ? "All Baths" : "حمامات"}
+                    <svg
+                        className="-me-1 ms-2 h-5 w-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
                     >
-                        {selectedBedrooms} {lang === "en" ? "All Beds" : "عدد الغرف" }  & {selectedBathrooms} {lang === "en" ? "All Baths" : "حمامات" } 
-                        <svg
-                            className="-me-1 ms-2 h-5 w-5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                            />
-                        </svg>
-                    </button>
-                </div>
+                        <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                        />
+                    </svg>
+                </button>
 
                 {isOpen && (
                     <div

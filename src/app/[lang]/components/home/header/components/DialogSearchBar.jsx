@@ -12,6 +12,7 @@ const DialogHeader = dynamic(() => import('@material-tailwind/react').then(mod =
 const DialogBody = dynamic(() => import('@material-tailwind/react').then(mod => mod.DialogBody), {
     ssr: false,
 });
+
 function DialogSearchBar({
     type,
     setType,
@@ -39,7 +40,6 @@ function DialogSearchBar({
     handleSearch
 }) {
 
-    
     const [show, setSize] = useState(false);
 
     const handleShowPopUp = useCallback(() => {
@@ -56,12 +56,6 @@ function DialogSearchBar({
     
     const bedroomOptions = useMemo(() => [1, 2, 3, 4, 5, '6+'], []);
     const bathroomOptions = useMemo(() => [1, 2, 3, 4, 5, '6+'], []);
-
-
-  
-
-
-   
 
     return (
         <div className='md:hidden'>

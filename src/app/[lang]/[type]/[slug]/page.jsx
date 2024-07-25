@@ -1,15 +1,20 @@
-import { notFound } from "next/navigation";
+/* eslint-disable @next/next/inline-script-id */
+import Script from "next/script";
 import SearchBar from "../../components/home/header/SearchBar";
 import Section from "../../components/home/Section";
+import Pagination from "../../components/Pagination";
 import { getDictionary } from "../../dictionaries";
 
 
 export async function generateMetadata({ params, searchParams }) {
-  const translate = await getDictionary(params.lang)
   const url = process.env.baseUrl
+
+
+
   let queryString = '';
 
   if (params.type !== null && params.type !== undefined) {
+
     queryString += `filter[type]=${params.type}&`;
   }
   if (searchParams.minPrice !== null && searchParams.minPrice !== undefined) {
@@ -17,6 +22,12 @@ export async function generateMetadata({ params, searchParams }) {
   }
   if (searchParams.maxPrice !== null && searchParams.maxPrice !== undefined) {
     queryString += `filter[max_price]=${searchParams.maxPrice}&`;
+  }
+  if (searchParams.minPropertyArea !== null && searchParams.minPropertyArea !== undefined) {
+    queryString += `filter[min_area]=${searchParams.minPropertyArea}&`;
+  }
+  if (searchParams.maxPropertyArea !== null && searchParams.maxPropertyArea !== undefined) {
+    queryString += `filter[max_area]=${searchParams.maxPropertyArea}&`;
   }
   if (searchParams.beds !== null && searchParams.beds !== undefined) {
     queryString += `filter[beds]=${searchParams.beds}&`;
@@ -27,29 +38,48 @@ export async function generateMetadata({ params, searchParams }) {
   if (searchParams.furnitureSetting !== null && searchParams.furnitureSetting !== undefined) {
     queryString += `filter[furniture_slug]=${searchParams.furnitureSetting}&`;
   }
+  if (searchParams.page !== null && searchParams.page !== undefined) {
+    queryString += `page=${searchParams.page}&`;
+  }
+
 
   queryString = queryString.slice(0, -1);
 
-  const Query = `${url}/properties?filter[category_name]=${params.slug}&${queryString}`
+  const ApiUrl = `${url}/properties?${queryString}`
+
+  const Query = `${url}/metalinks?link=/${params.type}/${params.slug}`
+
 
   try {
-    const res = await fetch(Query, {
-      headers: {
-        "X-localization": params.lang
-      },
-      cache: 'no-store'
-    })
-    const data = await res.json()
-    const slug = params.slug.charAt(0).toUpperCase() + params.slug.slice(1)
-    const type = params.type.charAt(0).toUpperCase() + params.type.slice(1)
+    const [dataResponse, metaLinkResponse] = await Promise.all([
+      fetch(`${ApiUrl}`, {
+        headers: {
+          "X-localization": params.lang
+        },
+        next: { revalidate: 3600 }
+      }),
+      fetch(`${Query}`, {
+        headers: {
+          "X-localization": params.lang
+        },
+        next: { revalidate: 3600 }
+      })
+    ]);
+    const data = await dataResponse.json();
+    const resMetaLink = await metaLinkResponse.json();
+
+    const metaLink = await resMetaLink.data
+    const keywords = metaLink.keywords.split(",")
     return {
-      title: `${data.data.meta.total} ${decodeURIComponent(slug)} ${translate.general.components.property_card.for} ${decodeURIComponent(type)} in Cairo Egypt`,
-      description: `${data.data.meta.total} ${decodeURIComponent(slug)} ${translate.general.components.property_card.for} ${decodeURIComponent(type)} in Cairo Egypt`,
+      title: `${data.data.meta.total} ${metaLink.title}`,
+      description: `${data.data.meta.total} ${metaLink.description}`,
+      keywords: keywords,
       openGraph: {
-        title: `${data.data.meta.total} ${decodeURIComponent(slug)}  ${translate.general.components.property_card.for} ${decodeURIComponent(type)} in Cairo Egypt`,
-        // images: `${data.data.meta.total} ${slug} For ${type} in Cairo Egypt`,
-        description: `${data.data.meta.total} ${decodeURIComponent(slug)}  ${translate.general.components.property_card.for} ${decodeURIComponent(type)} in Cairo Egypt`,
+        title: `${data.data.meta.total} ${metaLink.title}`,
+        description: `${data.data.meta.total} ${metaLink.description}`,
+        keywords: keywords
       },
+
     }
   } catch (e) {
     return {
@@ -63,7 +93,7 @@ export async function generateMetadata({ params, searchParams }) {
   }
 }
 
-const getData = async (baseUrl, type, slug, min, max, beds, baths, furniture, lang) => {
+const getData = async (baseUrl, type, slug, min, max, minPropertyArea, maxPropertyArea, beds, baths, furniture, lang, page) => {
   let queryString = '';
 
   if (type !== null && type !== undefined) {
@@ -76,6 +106,12 @@ const getData = async (baseUrl, type, slug, min, max, beds, baths, furniture, la
   if (max !== null && max !== undefined) {
     queryString += `filter[max_price]=${max}&`;
   }
+  if (minPropertyArea !== null && minPropertyArea !== undefined) {
+    queryString += `filter[min_area]=${minPropertyArea}&`;
+  }
+  if (maxPropertyArea !== null && maxPropertyArea !== undefined) {
+    queryString += `filter[max_area]=${maxPropertyArea}&`;
+  }
   if (beds !== null && beds !== undefined) {
     queryString += `filter[beds]=${beds}&`;
   }
@@ -85,10 +121,13 @@ const getData = async (baseUrl, type, slug, min, max, beds, baths, furniture, la
   if (furniture !== null && furniture !== undefined) {
     queryString += `filter[furniture_slug]=${furniture}&`;
   }
+  if (page !== null && page !== undefined) {
+    queryString += `page=${page}&`;
+  }
 
   // Remove the trailing '&' if it exists
   queryString = queryString.slice(0, -1);
- 
+
   const Query = `${baseUrl}/properties?filter[category_name]=${slug}&${queryString}`
 
   try {
@@ -102,27 +141,77 @@ const getData = async (baseUrl, type, slug, min, max, beds, baths, furniture, la
     return data;
   } catch (e) {
     return e
-    
+
   }
 }
 
 export default async function Slug({ params, searchParams }) {
   const translate = await getDictionary(params.lang)
   const baseUrl = process.env.baseUrl
-  const req = await getData(baseUrl, params.type, params.slug, searchParams.minPrice, searchParams.maxPrice, searchParams.beds, searchParams.baths, searchParams.furnitureSetting, params.lang)
+  const req = await getData(baseUrl, params.type, params.slug, searchParams.minPrice, searchParams.maxPrice, searchParams.minPropertyArea, searchParams.maxPropertyArea, searchParams.beds, searchParams.baths, searchParams.furnitureSetting, params.lang, searchParams.page)
   const data = await req?.data
 
-  return (
-    <main>
-      <SearchBar lang={params.lang} baseUrl={baseUrl} data={data} params={params} translate={translate} />
-      {req?.status && (
-        data.data.length > 0 ? (
 
-          <Section lang={params.lang} data={data} translate={translate} />
-        ) : (
-          <h1 className="text-center mt-44 font-semibold text-lg md:text-xl">Sorry there is no data</h1>
-        )
-      )}
-    </main>
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    '@id': 'mainEntity',
+    url: `${baseUrl}/${params.type}`,
+    itemListElement: data.data.map((property, index) => ({
+      '@type': `${property.title.slice(0, -1)}`,
+      '@id': `ReferenceNumber:${property.refNumber}`,
+      name: `${property.title}`,
+      image: `${baseUrl}/original/${property.image.image}`,
+      url: `${baseUrl}/${property.title.toLowerCase()}/${property.area.toLowerCase()}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+      tourBookingPage: `${baseUrl}/${property.title.toLowerCase()}/${property.area.toLowerCase()}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+      address: `${property.subarea.name}, ${property.area}, EG`,
+      telephone: '+201221409530',
+      floorSize: 'QuantitativeValue',
+      floorSize: 'sqm',
+    })),
+  };
+
+
+  const propertySchema = data.data.map((property) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    '@id': `ReferenceNumber:#${property.refNumber}`,
+    sku: `${property.refNumber}`,
+    offers: {
+      '@type': 'Offer',
+      availability: 'https://schema.org/InStock',
+      price: `${property.price}`,
+      priceCurrency: 'EGP',
+      '@id': 'HousePointEgyptOrganization',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '5',
+    },
+  }));
+
+
+  return (
+    <>
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchema) }}
+      />
+      <main>
+        <SearchBar lang={params.lang} baseUrl={baseUrl} data={data} params={params} translate={translate} />
+        {req?.status && (
+          data.data.length > 0 ? (
+            <Section lang={params.lang} data={data} translate={translate} />
+          ) : (
+            <h1 className="text-center mt-44 font-semibold text-lg md:text-xl">Sorry there is no data</h1>
+          )
+        )}
+        <Pagination lang={params.lang} data={data} />
+      </main>
+    </>
   );
 }

@@ -5,9 +5,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import phoneIcon from "../../../../../../../../../public/assets/phone.png"
 import whatsAppIcon from "../../../../../../../../../public/assets/whatsapp.png"
+import faceIcon from "../../../../../../../../../public/assets/facebooksq.png"
+import twitterIcon from "../../../../../../../../../public/assets/twitter.png"
+import linkedInIcon from "../../../../../../../../../public/assets/linkedin.png"
+import { useParams } from 'next/navigation';
 
-function Form() {
+function Form({baseUrl}) {
 
+    const params = useParams()
     const [fullName, setFullName] = useState("")
     const [phone, setPhone] = useState(0)
     const [email, setEmail] = useState("")
@@ -75,18 +80,38 @@ function Form() {
             </div>
             <button className='w-full capitalize bg-custom-blue text-white  py-2.5 text-xl rounded-lg hover:opacity-80'>send</button>
             <div className='grid md:grid-cols-2 gap-5 mt-4'>
-                <Link className='bg-green-600 text-white flex items-center justify-center py-2 text-xl capitalize rounded-lg hover:opacity-80' href={"/"}>
-                    <Image src={phoneIcon} width={22} className='me-2' alt='phone'/>
+                <Link className='bg-green-600 text-white flex items-center justify-center py-2 text-xl capitalize rounded-lg hover:opacity-80' href={"tel:+1234567890"}>
+                    <Image src={phoneIcon} width={22} className='me-2' alt='phone' />
                     call
 
                 </Link>
-                <Link className='bg-green-600 text-white  py-2 text-xl flex items-center justify-center capitalize rounded-lg hover:opacity-80' href={"/"}>
-                    <Image src={whatsAppIcon} width={22} className='me-2' alt='whatsapp'/>
+                <Link className='bg-green-600 text-white  py-2 text-xl flex items-center justify-center capitalize rounded-lg hover:opacity-80' href={`https://api.whatsapp.com/send?phone=1234567890&text=${message}`}>
+                    <Image src={whatsAppIcon} width={22} className='me-2' alt='whatsapp' />
                     whats app
                 </Link>
             </div>
+
+            <div className='mt-3'>
+                <h3 className='mb-2 text-lg'>Share On</h3>
+                <div className='grid sm:grid-cols-2 md:grid-cols-4 gap-2 '>
+                    <Link className='bg-[#3f53b7] py-1 flex items-center justify-center rounded-lg hover:opacity-80' target='_blank' href={`https://www.facebook.com/sharer.php?u=${baseUrl}/${params.type}/${params.slug}/${params.area}/${params.subarea}/${params.details}`}>
+                        <Image src={faceIcon} width={30} alt='facebook' />
+                    </Link>
+                    <Link className='bg-[#04a7ef] py-1 flex items-center justify-center rounded-lg hover:opacity-80' target='_blank' href={`https://twitter.com/intent/tweet?text=&amp;url=${baseUrl}/${params.type}/${params.slug}/${params.area}/${params.subarea}/${params.details}`}>
+                        <Image src={twitterIcon} width={30} alt='twitter' />
+                    </Link>
+                    <Link className='bg-[#0376df] py-1 flex items-center justify-center  rounded-lg hover:opacity-80' target='_blank' href={`"https://www.linkedin.com/shareArticle?mini=true&amp;url=${baseUrl}/${params.type}/${params.slug}/${params.area}/${params.subarea}/${params.details}`}>
+                        <Image src={linkedInIcon} width={30} alt='linkedIn' />
+
+                    </Link>
+                    <Link className='bg-green-600 py-1 flex items-center justify-center rounded-lg hover:opacity-80' target='_blank' href={`https://web.whatsapp.com/send?text=${baseUrl}/${params.type}/${params.slug}/${params.area}/${params.subarea}/${params.details}`}>
+                        <Image src={whatsAppIcon} width={25} alt='whatsapp' />
+                    </Link>
+                </div>
+            </div>
+
         </form>
     )
 }
 
-export default Form
+export default React.memo(Form)

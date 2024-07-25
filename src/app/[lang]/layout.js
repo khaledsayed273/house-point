@@ -1,7 +1,11 @@
+/* eslint-disable @next/next/inline-script-id */
 import { Inter, } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar/Navbar";
 import { getDictionary } from "./dictionaries";
+import { ErrorBoundary } from "next/dist/client/components/error-boundary";
+import Error from "./error";
+import Script from "next/script";
 // import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,13 +20,83 @@ export const metadata = {
 
 export default async function RootLayout({ children, params }) {
   const translate = await getDictionary(params.lang)
+  const baseUrl = process.env.baseUrl
+
+
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': 'housepointegypt.com',
+    name: 'House Point Egypt - Real Estate',
+    mainEntity: {
+      '@id': 'mainEntity',
+    },
+  };
+  const orgSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': 'HousePointEgyptOrganization',
+    name: 'House Point Egypt - Real Estate',
+    url: baseUrl,
+    logo: baseUrl + '/images/HPlogo.png',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Maadi',
+      addressRegion: 'Cairo',
+      postalCode: '11728',
+      streetAddress:
+        ' 22 Road 9 , Maadi AI Khabiri Ash sharqeyah , Maadi , Egypt',
+      addressCountry: 'Egypt',
+    },
+    email: '	mailto:info@housepointegypt.com',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      telephone: '+201221409530',
+    },
+  };
+
+
   return (
     <html lang={params.lang}>
-      <body dir={params.lang === "ar" ? 'rtl' : 'ltr'} className={`${inter.className} `}>
+      <Script
+        dangerouslySetInnerHTML={{
+          __html: `(function(w,d,s,l,i){w[l] = w[l] || [];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TGDM45Z');`,
+        }}
+      />
+      <Script
+        dangerouslySetInnerHTML={{
+          __html: `  window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-XBCPETJP67');`,
+        }}
+      />
+      <Script
+        async
+        src='https://www.googletagmanager.com/gtag/js?id=G-XBCPETJP67'
+      />
 
-        <Navbar translate={translate} lang={params.lang} />
-        {children}
-        {/* <Footer translate={translate} lang={params.lang}/> */}
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+      />
+      <body dir={params.lang === "ar" ? 'rtl' : 'ltr'} className={`${inter.className} `}>
+        <ErrorBoundary fallback={<Error />}>
+
+          <Navbar translate={translate} lang={params.lang} />
+          {children}
+          {/* <Footer translate={translate} lang={params.lang}/> */}
+        </ErrorBoundary>
       </body>
     </html>
   );

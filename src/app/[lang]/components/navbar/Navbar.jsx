@@ -49,9 +49,9 @@ function Navbar({ translate, lang }) {
 
     return (
         <nav className={`w-full transition-all static  bg-[#e5e7eb]`}>
-            <div className="container mx-auto  py-2 px-2 md:px-5">
+            <div className="container mx-auto  py-1 lg:py-2 px-2 md:px-5">
                 <div className='flex justify-between z-20 items-center '>
-                    <Link onClick={() => setShowNav(false)} className='transition-all h-[55px] w-[170px] md:w-[220px] relative md:h-[70px] duration-300 hover:scale-90' href={`/${lang}`}>
+                    <Link onClick={() => setShowNav(false)} className='transition-all content-center h-[55px] w-[170px] md:w-[220px] relative md:h-[70px] duration-300 hover:scale-90' href={`/${lang}`}>
                         <Image
                             priority
                             src={logo}
@@ -61,7 +61,7 @@ function Navbar({ translate, lang }) {
                             sizes="(min-width: 808px) 50vw, 100vw"
                         />
                     </Link>
-                    <ul className={`flex absolute w-full ${showNav ? "top-16" : "-top-[450px] opacity-20 lg:opacity-100"} left-0  z-30  lg:z-10 lg:h-auto  transition-all duration-300  bg-[#e5e7eb] lg:bg-transparent flex-col lg:flex-row lg:w-auto lg:static items-center `}>
+                    <ul className={`flex absolute w-full ${showNav ? "top-14" : "-top-[450px] opacity-20 lg:opacity-100"} left-0  z-30  lg:z-10 lg:h-auto  transition-all duration-300  bg-[#e5e7eb] lg:bg-transparent flex-col lg:flex-row lg:w-auto lg:static items-center `}>
                         {ul.map((link, index) => (
                             <li className='my-5 lg:my-0' key={index}>
                                 <Link onClick={() => setShowNav(false)} className='text-custom-blue capitalize hover:opacity-70 text-sm md:text-base lg:me-5 font-semibold' href={`${link.path}`}>{link.name}</Link>

@@ -24,11 +24,11 @@ function PriceComponent({lang, minPrice, maxPrice, handleMinPriceSelect, handleM
             <div onClick={() => setIsOpen(false)} className={`absolute top-0 right-0 bottom-0 left-0 z-10 ${isOpen ? "block" : "hidden"}`}>
 
             </div>
-            <div className="hidden md:block relative select-none mt-2">
+            <div className="hidden md:block md:w-full h-full relative select-none mt-2">
                 <button
                     type="button"
                     onClick={toggleDropdown}
-                    className="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
+                    className="inline-flex justify-between w-full h-[40px] items-center rounded-md border border-gray-300 shadow-sm px-2 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
                     id="menu-button"
                     aria-expanded="true"
                     aria-haspopup="true"

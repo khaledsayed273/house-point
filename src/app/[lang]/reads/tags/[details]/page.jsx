@@ -1,54 +1,57 @@
 import React from 'react'
-import Articles from './components/Articles'
-import { getDictionary } from '../dictionaries'
 import Link from 'next/link'
-import FeatureProperties from './components/FeatureProperties'
+import Articles from '../../components/Articles'
+import { getDictionary } from '@/app/[lang]/dictionaries'
+import FeatureProperties from '../../components/FeatureProperties'
+
+
 
 
 export async function generateMetadata({ params }) {
     const url = process.env.baseUrl
     try {
-        const res = await fetch(`${url}/metalinks?link=/reads`, {
-            headers: {
-                "X-localization": params.lang
-            },
-            cache: 'no-store'
-        })
-        const data = await res.json()
-        const details = await data.data
-        const keywords = details.keywords.split(",")
-        return {
-            title: details.title,
-            description: details.title,
-            keywords: keywords,
-            openGraph: {
-                title: details.title,
-                description: details.title,
-                keywords: keywords,
-            },
-        }
+      const res = await fetch(`${url}/tags/${params.details}`, {
+        headers: {
+          "X-localization": params.lang
+        },
+        cache: 'no-store'
+      })
+      const data = await res.json()
+      const details = await data.data
+      return {
+        title: details.name,
+        description: details.description,
+        openGraph: {
+          title: details.name,
+          description: details.description,
+        },
+      }
     } catch (e) {
-        return {
-            title: "House Point",
-            description: "House Point",
-            openGraph: {
-                title: "House Point",
-                description: "House Point",
-            },
-        }
+      return {
+        title: "House Point",
+        description: "House Point",
+        openGraph: {
+          title: "",
+          description: "House Point",
+        },
+      }
     }
-}
+  }
 
 
-const getArticles = async (lang, baseUrl,) => {
+
+
+
+const getTagDetails = async (lang, baseUrl, details) => {
     try {
-        const res = await fetch(`${baseUrl}/articles`, {
+        const res = await fetch(`${baseUrl}/tags/${details}`, {
             headers: {
                 "X-localization": lang
             },
             cache: 'no-store'
         })
         const data = await res.json()
+        console.log(data);
         return data
     } catch (e) {
         console.log(e);
@@ -85,40 +88,23 @@ const getTags = async (lang, baseUrl) => {
     }
 }
 
-const getPageTitle = async (lang, baseUrl) => {
-    try {
-        const res = await fetch(`${baseUrl}/pagetitles?link=/reads`, {
-            headers: {
-                "X-localization": lang
-            },
-            cache: 'no-store'
-        })
-        const data = await res.json()
-        return data
-    } catch (e) {
-        console.log(e);
-    }
-}
-
 async function page({ params }) {
     const baseUrl = process.env.baseUrl
     const translate = await getDictionary(params.lang)
-    const articlesApi = getArticles(params.lang, baseUrl)
+    const tagsDetailsApi = getTagDetails(params.lang, baseUrl , params.details)
     const topicsApi = getTopics(params.lang, baseUrl)
     const tagsApi = getTags(params.lang, baseUrl)
-    const pageTitleApi = getPageTitle(params.lang, baseUrl)
-    const [articles, topics, tags, pageTitle] = await Promise.all([articlesApi, topicsApi, tagsApi, pageTitleApi])
+    const [tagDetails, topics, tags] = await Promise.all([tagsDetailsApi, topicsApi, tagsApi])
 
     return (
-        <main className='p-2 md:p-5'>
-            {articles?.status && (
+        <main className='p-2 md:p-5 mt-3'>
+            {tagDetails?.status && (
                 <div className='grid lg:grid-cols-3 xl:grid-cols-4 gap-5 '>
                     <div className='lg:col-span-2 xl:col-span-3'>
-                        <h1 className='text-xl font-semibold md:text-3xl border-b border-gray-500 mb-5 pb-5'>{pageTitle?.data?.title}</h1>
-                        <h2>Explore the real estate world, where we offer you rich and diverse content that caters to all your needs and curiosity about real estate. Here, you will find our articles covering various aspects of the real estate market, ranging from tips for real estate investment planning to the latest trends in home design and interior decor.</h2>
+                        <h1 className='text-xl font-semibold md:text-3xl border-b border-gray-500 mb-5 pb-5'>#{tagDetails.data.name}</h1>
+                        <p>{tagDetails.data.description}</p>
                         <div className='grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-7'>
-                            {articles?.data.map((item, index) => (
-
+                            {tagDetails?.data?.articles?.map((item, index) => (
                                 <Articles lang={params.lang} key={index} item={item} translate={translate} />
                             ))}
                         </div>

@@ -68,7 +68,6 @@ function SearchBar({ baseUrl, translate, params, data, lang }) {
     setIsOpen(false);
   }, []);
 
-
   const handleInputChange = useCallback((e) => {
     setSearchTerm(e.target.value);
     setIsOpen(true);
@@ -104,7 +103,6 @@ function SearchBar({ baseUrl, translate, params, data, lang }) {
     setMinPrice('');
     setMaxPrice('');
   }, []);
-
 
   // search
 
@@ -180,15 +178,15 @@ function SearchBar({ baseUrl, translate, params, data, lang }) {
     } catch (e) {
       console.error("Failed to fetch data", e);
     }
-  }, [baseUrl, lang, params?.slug]);
+  }, []);
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
 
   return (
     <>
-      {categories.length > 0 ? (
+      {!categories.length > 0 ? (
 
         <div className='relative searchBar w-full md:px-4 mt-4'>
           <div className="container mx-auto">
@@ -339,6 +337,10 @@ function SearchBar({ baseUrl, translate, params, data, lang }) {
               />
 
               <button onClick={handleSearch} className="active:scale-95 mt-6 ms-auto hidden md:block w-full md:w-auto rounded-lg border bg-custom-blue-darker px-8 py-2 font-medium text-white outline-none focus:ring hover:opacity-90 sticky z-20">{translate.general.components.searchbar.search}</button>
+              <div className='hidden md:flex mt-5 lg:mt-0 justify-center'>
+                <input value={minPropertyArea} onChange={(e) => setminPropertyArea(e.target.value)} placeholder='Min Area (sqm)' className='border-0 outline-none ring-0 p-1.5 px-2 rounded-md me-2' type="number" name="minPropertyArea" />
+                <input value={maxPropertyArea} onChange={(e) => setmaxPropertyArea(e.target.value)} placeholder='Max Area (sqm)' className='border-0 outline-none ring-0 p-1.5 px-2 rounded-md ' type="number" name="maxPropertyArea" />
+              </div>
             </div>
           </div>
         </div>
@@ -348,7 +350,6 @@ function SearchBar({ baseUrl, translate, params, data, lang }) {
       <div onClick={() => setIsOpen(false)} className={`absolute top-0 right-0 bottom-0 left-0 z-10 ${isOpen ? "block" : "hidden"}`}>
 
       </div>
-
     </>
   )
 }
