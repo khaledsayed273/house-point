@@ -11,16 +11,20 @@ import Script from "next/script";
 export async function generateMetadata() {
   const url = process.env.baseUrl
   try {
-    const res = await fetch(`${url}/properties?filter[category_name]=apartments`)
+    const res = await fetch(`${url}/metalinks?link=/`)
     const data = await res.json()
     const details = await data.data
+
+    const keywords = details.keywords.split(",")
+
     return {
       title: details.title,
       description: details.description,
+      keywords: keywords,
       openGraph: {
         title: details.title,
-        images: [details.images[0].image],
         description: details.description,
+        keywords: keywords
       },
     }
   } catch (e) {
@@ -101,27 +105,28 @@ export default async function Home({ params }) {
   const linksApi = getToplinks(params.lang, process.env.baseUrl)
   const primeLocationApi = getLocations(params.lang, process.env.baseUrl)
   const socialApi = getSocial(params.lang, process.env.baseUrl)
-  const [data, toplinks, primeLocations ] = await Promise.all([dataApi, linksApi, primeLocationApi , socialApi])
+  const [data, toplinks, primeLocations] = await Promise.all([dataApi, linksApi, primeLocationApi, socialApi])
+
 
   const itemListSchemaSale = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     '@id': '@mainEntity',
     url: process.env.baseUrl,
-    itemListElement: data?.data?.sale.map((property) => {
+    itemListElement: data?.data?.sale?.map((property) => {
       return {
         '@context': 'https://schema.org',
-        '@type': `${property.title.slice(0, -1)}`,
-        '@id': `ReferenceNumber:${property.refNumber}`,
-        name: `${property.title}`,
-        image: process.env.baseUrl + 'original/' + property.image.image,
+        '@type': `${property?.title.slice(0, -1)}`,
+        '@id': `ReferenceNumber:${property?.refNumber}`,
+        name: `${property?.title}`,
+        image: process.env.baseUrl + 'original/' + property?.image.image,
         url:
-        process.env.baseUrl +
-          `/${property.title.toLowerCase()}/${property.area.toLowerCase()}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
+          process.env.baseUrl +
+          `/${property?.title.toLowerCase()}/${property?.area}/${property?.subarea?.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
           }`,
         tourBookingPage:
-        process.env.baseUrl +
-          `/${property.title.toLowerCase()}/${property.area.toLowerCase()}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
+          process.env.baseUrl +
+          `/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
           }`,
         address: `${property.subarea.name}, ${property.area}, EG`,
         telephone: '+201221409530',
@@ -144,12 +149,12 @@ export default async function Home({ params }) {
         name: `${property.title}`,
         image: process.env.baseUrl + 'original/' + property.image.image,
         url:
-        process.env.baseUrl +
-          `/${property.title.toLowerCase()}/${property.area.toLowerCase()}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
+          process.env.baseUrl +
+          `/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
           }`,
         tourBookingPage:
-        process.env.baseUrl +
-          `/${property.title.toLowerCase()}/${property.area.toLowerCase()}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
+          process.env.baseUrl +
+          `/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
           }`,
         address: `${property.subarea.name}, ${property.area}, EG`,
         telephone: '+201221409530',

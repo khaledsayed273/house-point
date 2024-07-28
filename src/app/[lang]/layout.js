@@ -6,6 +6,7 @@ import { getDictionary } from "./dictionaries";
 import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import Error from "./error";
 import Script from "next/script";
+import Footer from "./components/Footer";
 // import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -95,7 +96,7 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 
           <Navbar translate={translate} lang={params.lang} />
           {children}
-          {/* <Footer translate={translate} lang={params.lang}/> */}
+          <Footer translate={translate} lang={params.lang}/>
         </ErrorBoundary>
       </body>
     </html>

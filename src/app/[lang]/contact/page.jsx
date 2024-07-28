@@ -20,21 +20,20 @@ const getData = async (baseUrl, lang) => {
     }
 }
 
-async function page({params}) {
+async function page({ params }) {
 
 
     const baseUrl = process.env.baseUrl
     const req = await getData(baseUrl, params.lang)
+    const description = req?.data?.description || ""; 
+    const markup = { __html: description };
 
-    console.log(req);
 
-  return (
-    <main className='p-2 md:p-5'>
-        <div dangerouslySetInnerHTML={{__html: req.data.description}}></div>
-
-      
-    </main>
-  )
+    return (
+        <main className='p-2 md:p-5'>
+            <div dangerouslySetInnerHTML={markup}></div>
+        </main>
+    )
 }
 
 export default page

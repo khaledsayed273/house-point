@@ -162,8 +162,8 @@ export default async function Slug({ params, searchParams }) {
       '@id': `ReferenceNumber:${property.refNumber}`,
       name: `${property.title}`,
       image: `${baseUrl}/original/${property.image.image}`,
-      url: `${baseUrl}/${property.title.toLowerCase()}/${property.area.toLowerCase()}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
-      tourBookingPage: `${baseUrl}/${property.title.toLowerCase()}/${property.area.toLowerCase()}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+      url: `${baseUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+      tourBookingPage: `${baseUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
       address: `${property.subarea.name}, ${property.area}, EG`,
       telephone: '+201221409530',
       floorSize: 'QuantitativeValue',
@@ -201,7 +201,7 @@ export default async function Slug({ params, searchParams }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchema) }}
       />
-      <main>
+      <main className="min-h-screen">
         <SearchBar lang={params.lang} baseUrl={baseUrl} data={data} params={params} translate={translate} />
         {req?.status && (
           data.data.length > 0 ? (
