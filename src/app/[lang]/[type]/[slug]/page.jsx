@@ -157,7 +157,7 @@ export default async function Slug({ params, searchParams }) {
     '@type': 'ItemList',
     '@id': 'mainEntity',
     url: `${baseUrl}/${params.type}`,
-    itemListElement: data.data.map((property, index) => ({
+    itemListElement: data?.data?.map((property, index) => ({
       '@type': `${property.title.slice(0, -1)}`,
       '@id': `ReferenceNumber:${property.refNumber}`,
       name: `${property.title}`,
@@ -172,7 +172,7 @@ export default async function Slug({ params, searchParams }) {
   };
 
 
-  const propertySchema = data.data.map((property) => ({
+  const propertySchema = data?.data?.map((property) => ({
     '@context': 'https://schema.org',
     '@type': 'Product',
     '@id': `ReferenceNumber:#${property.refNumber}`,

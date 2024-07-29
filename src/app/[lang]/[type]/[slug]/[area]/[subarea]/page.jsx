@@ -173,7 +173,7 @@ async function page({ params, searchParams }) {
     '@type': 'ItemList',
     '@id': 'mainEntity',
     url: `${baseUrl}/${params.type}`,
-    itemListElement: data.data.data.map((property, index) => ({
+    itemListElement: data?.data?.data?.map((property, index) => ({
       '@type': `${property.title.slice(0, -1)}`,
       '@id': `ReferenceNumber:${property.refNumber}`,
       name: `${property.title}`,
@@ -188,7 +188,7 @@ async function page({ params, searchParams }) {
   };
 
 
-  const propertySchema = data.data.data.map((property) => ({
+  const propertySchema = data?.data?.data?.map((property) => ({
     '@context': 'https://schema.org',
     '@type': 'Product',
     '@id': `ReferenceNumber:#${property.refNumber}`,

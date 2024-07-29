@@ -112,7 +112,6 @@ async function Footer({ lang }) {
 
             {socials?.status && (
                 <div className='px-5 mb-5'>
-
                     {socials.data[0].social === "facebook" && (
                         <Link className='me-3 inline-block' target='_blank' href={socials.data[0].url}>
                             <Image className='hover:rotate-[360deg] transition-all duration-300' width={35} src={facebook} alt='facebook' />

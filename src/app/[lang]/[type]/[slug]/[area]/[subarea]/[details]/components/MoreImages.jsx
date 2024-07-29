@@ -16,11 +16,13 @@ const DialogBody = dynamic(() => import('@material-tailwind/react').then(mod => 
 
 function MoreImages({ details }) {
 
-    const [show, setSize] = useState(false);
+    const [show, setShow] = useState(false);
 
-    const handleShowPopUp = () => {
-        setSize(!show)
-    }
+    const handleShowPopUp = (state) => {
+        setShow(state);
+    };
+
+
 
     return (
         <>
@@ -37,15 +39,13 @@ function MoreImages({ details }) {
                     <Image blurDataURL={details.images[1].placeholder} placeholder='blur' src={details.images[1].image} alt="1" sizes="(min-width: 808px) 50vw, 100vw" fill />
                 )}
             </div>
-            <Dialog
-                open={show}
-                size={"xxl"}
-                handler={handleShowPopUp}
-            >
+            <Dialog open={show} size={"xxl"} handler={handleShowPopUp}>
                 <DialogHeader>
-                    <h3 className='text-center flex-1 text-sm md:text-base'>شقه حديثه للايجار في سرايات المعادي القاهره مصر - Gallery -</h3>
+                    <h3 className='text-center flex-1 text-sm md:text-base'>
+                        شقه حديثه للايجار في سرايات المعادي القاهره مصر - Gallery -
+                    </h3>
                     <button
-                        onClick={() => handleShowPopUp(null)}
+                        onClick={() => handleShowPopUp(false)}
                         className="ms-auto"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-10 text-custom-blue">
@@ -54,10 +54,20 @@ function MoreImages({ details }) {
                     </button>
                 </DialogHeader>
                 <DialogBody className='bg-blue-gray-800 h-full overflow-auto'>
-                    <div className='grid sm:grid-cols-2 md:grid-cols-3 gap-5'>
+                    <div className='grid md:grid-cols-2 2xl:grid-cols-3 gap-5'>
                         {details.images.map((item, index) => (
-                            <div key={index} className='relative h-[250px] sm:h-[300px] md:h-[250px] lg:h-[300px] xl:h-[400px] overflow-hidden rounded-lg'>
-                                <Image blurDataURL={item.placeholder} placeholder='blur' sizes="(min-width: 808px) 50vw, 100vw"  src={item.image} fill alt={`image-${index}`} />
+                            <div
+                                key={index}
+                                className='relative h-[250px] sm:h-[350px] lg:h-[300px] xl:h-[400px] overflow-hidden rounded-lg'
+                            >
+                                <Image
+                                    blurDataURL={item.placeholder}
+                                    placeholder='blur'
+                                    sizes="(min-width: 808px) 50vw, 100vw"
+                                    src={item.image}
+                                    fill
+                                    alt={`image-${index}`}
+                                />
                             </div>
                         ))}
                     </div>
