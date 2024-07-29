@@ -112,7 +112,7 @@ export default async function Home({ params }) {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     '@id': '@mainEntity',
-    url: process.env.baseUrl,
+    url: process.env.mainUrl,
     itemListElement: data?.data?.sale?.map((property) => {
       return {
         '@context': 'https://schema.org',
@@ -121,11 +121,11 @@ export default async function Home({ params }) {
         name: `${property?.title}`,
         image: process.env.baseUrl + 'original/' + property?.image.image,
         url:
-          process.env.baseUrl +
+          process.env.mainUrl +
           `/${property?.title.toLowerCase()}/${property?.area}/${property?.subarea?.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
           }`,
         tourBookingPage:
-          process.env.baseUrl +
+          process.env.mainUrl +
           `/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
           }`,
         address: `${property.subarea.name}, ${property.area}, EG`,
@@ -140,20 +140,20 @@ export default async function Home({ params }) {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     '@id': '@mainEntity',
-    url: process.env.baseUrl,
+    url: process.env.mainUrl,
     itemListElement: data?.data?.sale.map((property) => {
       return {
         '@context': 'https://schema.org',
         '@type': `${property.title.slice(0, -1)}`,
         '@id': `ReferenceNumber:${property.refNumber}`,
         name: `${property.title}`,
-        image: process.env.baseUrl + 'original/' + property.image.image,
+        image: process.env.mainUrl + 'original/' + property.image.image,
         url:
-          process.env.baseUrl +
+          process.env.mainUrl +
           `/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
           }`,
         tourBookingPage:
-          process.env.baseUrl +
+          process.env.mainUrl +
           `/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber
           }`,
         address: `${property.subarea.name}, ${property.area}, EG`,
@@ -225,11 +225,18 @@ export default async function Home({ params }) {
       />
 
       <main>
+        <meta name='robots' content='index, follow' />
+        <link
+          rel='canonical'
+          href={process.env.mainUrl}
+          key='canonical'
+          title='House Point Egypt - Real Estate | Home'
+        />
         <Header translate={translate} lang={params.lang} />
         {data?.status && (
           <>
-            <h2 className="text-center my-5 md:text-2xl font-semibold">{translate.pages.home.titleRent}</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 px-2 md:px-5 xl:px-10 my-10">
+            <h2 className="text-center my-5 md:text-2xl font-medium">{translate.pages.home.titleRent}</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 px-2 md:px-5 xl:px-10 my-10">
               {data.data.rent.map((item, index) => (
                 <Cards key={index} lang={params.lang} item={item} translate={translate} />
               ))}
@@ -237,8 +244,8 @@ export default async function Home({ params }) {
             <div className="flex justify-center items-center ">
               <Link className="mx-auto text-sm md:text-xl text-white bg-black  py-3 px-4 rounded-md hover:opacity-80" href={`${params.lang}/rent/properties`}>{translate.pages.home.exploreMoreRent}</Link>
             </div>
-            <h2 className="text-center my-5 md:text-2xl font-semibold">{translate.pages.home.titleSale}</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 px-2 md:px-5 xl:px-10 my-10">
+            <h2 className="text-center my-5 md:text-2xl font-medium">{translate.pages.home.titleSale}</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4  gap-5 px-2 md:px-5 xl:px-10 my-10">
               {data.data.sale.map((item, index) => (
                 <Cards key={index} lang={params.lang} item={item} translate={translate} />
               ))}
@@ -247,8 +254,8 @@ export default async function Home({ params }) {
               <Link className="mx-auto text-sm md:text-xl text-white bg-black  py-3 px-4 rounded-md hover:opacity-80" href={`${params.lang}/sale/properties`}>{translate.pages.home.exploreMoreSale}</Link>
             </div>
             <div className="container mx-auto my-10">
-              <h3 className="text-center my-5 text-xl font-semibold">LATEST BLOGS</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7 mt-10">
+              <h3 className="text-center my-5 text-xl font-medium">LATEST BLOGS</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7 mt-10">
                 {data.data.articles.map((item, index) => (
                   <Articles key={index} item={item} translate={translate} lang={params.lang} />
                 ))}

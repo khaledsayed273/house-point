@@ -7,6 +7,7 @@ import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import Error from "./error";
 import Script from "next/script";
 import Footer from "./components/Footer";
+import ProviderContext from "@/store/store";
 // import Footer from "./components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,6 +23,7 @@ export const metadata = {
 export default async function RootLayout({ children, params }) {
   const translate = await getDictionary(params.lang)
   const baseUrl = process.env.baseUrl
+  const mainUrl = process.env.mainUrl
 
 
   const schema = {
@@ -38,8 +40,8 @@ export default async function RootLayout({ children, params }) {
     '@type': 'Organization',
     '@id': 'HousePointEgyptOrganization',
     name: 'House Point Egypt - Real Estate',
-    url: baseUrl,
-    logo: baseUrl + '/images/HPlogo.png',
+    url: mainUrl,
+    logo: mainUrl + '/images/HPlogo.png',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Maadi',
@@ -93,10 +95,11 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       />
       <body dir={params.lang === "ar" ? 'rtl' : 'ltr'} className={`${inter.className} `}>
         <ErrorBoundary fallback={<Error />}>
-
-          <Navbar translate={translate} lang={params.lang} />
-          {children}
-          <Footer translate={translate} lang={params.lang}/>
+          <ProviderContext>
+            <Navbar translate={translate} lang={params.lang} />
+            {children}
+            <Footer translate={translate} lang={params.lang} />
+          </ProviderContext>
         </ErrorBoundary>
       </body>
     </html>

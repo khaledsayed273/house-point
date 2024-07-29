@@ -200,6 +200,7 @@ function SearchBar({ baseUrl, translate, params, data, lang }) {
                   {translate.general.components.searchbar.show} ({data?.meta?.total}) {translate.general.components.searchbar.result}
                 </span>
               </div>
+
               <div className="gap-2 grid  md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
 
                 {/* location */}
@@ -309,6 +310,7 @@ function SearchBar({ baseUrl, translate, params, data, lang }) {
                   )}
                 </div>
               </div>
+
               <DialogSearchBar
                 translate={translate}
                 type={type}
@@ -337,6 +339,7 @@ function SearchBar({ baseUrl, translate, params, data, lang }) {
               />
 
               <button onClick={handleSearch} className="active:scale-95 mt-6 ms-auto hidden md:block w-full md:w-auto rounded-lg border bg-custom-blue-darker px-8 py-2 font-medium text-white outline-none focus:ring hover:opacity-90 sticky z-20">{translate.general.components.searchbar.search}</button>
+
               <div className='hidden md:flex mt-5 lg:mt-0 justify-center'>
                 <input value={minPropertyArea} onChange={(e) => setminPropertyArea(e.target.value)} placeholder='Min Area (sqm)' className='border-0 outline-none ring-0 p-1.5 px-2 rounded-md me-2' type="number" name="minPropertyArea" />
                 <input value={maxPropertyArea} onChange={(e) => setmaxPropertyArea(e.target.value)} placeholder='Max Area (sqm)' className='border-0 outline-none ring-0 p-1.5 px-2 rounded-md ' type="number" name="maxPropertyArea" />

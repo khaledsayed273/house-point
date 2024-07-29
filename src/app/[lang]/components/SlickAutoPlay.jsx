@@ -43,7 +43,7 @@ function SlickAutoPlay({ lang, related, translate }) {
     };
 
     return (
-        <div className="slider-containerAutoPlay  mt-20 md:mt-0 mb-16">
+        <div className="slider-containerAutoPlay  mt-20 md:mt-0 mb-5">
             <h3 className='text-center mb-10 text-lg md:text-xl font-semibold'>RELATED PROPERTIES</h3>
 
             <Slider {...settings}>

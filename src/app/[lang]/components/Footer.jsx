@@ -75,7 +75,7 @@ async function Footer({ lang }) {
                     <ul>
                         <h3 className='md:text-2xl font-semibold mb-3'>Useful Links</h3>
                         {LinksData.data.slice(0, 5).map((item, index) => (
-                            <li className='my-2' key={index}><Link className='underline hover:opacity-70 flex items-center' href={`${lang}/${item.link}`}>
+                            <li className='my-2' key={index}><Link className='underline hover:opacity-70 flex items-center' href={`/${lang}/${item.link}`}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 me-1">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                 </svg>
@@ -87,24 +87,27 @@ async function Footer({ lang }) {
                 {LinksData?.status && (
                     <ul className='md:mt-9'>
                         {LinksData.data.slice(5, 10).map((item, index) => (
-                            <li className='my-2' key={index}><Link className='underline hover:opacity-70 flex items-center' href={`${lang}/${item.link}`}>
+                            <li className='my-2' key={index}><Link className='underline hover:opacity-70 flex items-center' href={`/${lang}/${item.link}`}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 me-1">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                 </svg>
                                 {item.title}
-                            </Link></li>
+                            </Link>
+                            </li>
                         ))}
                     </ul>
                 )}
                 {LinksData?.status && (
                     <ul className='md:mt-9'>
                         {LinksData.data.slice(10, 15).map((item, index) => (
-                            <li className='my-2' key={index}><Link className='underline hover:opacity-70 flex items-center' href={`${lang}/${item.link}`}>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 me-1">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                </svg>
-                                {item.title}
-                            </Link></li>
+                            <li className='my-2' key={index}>
+                                <Link className='underline hover:opacity-70 flex items-center' href={`/${lang}/${item.link}`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 me-1">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                    </svg>
+                                    {item.title}
+                                </Link>
+                            </li>
                         ))}
                     </ul>
                 )}
@@ -156,7 +159,11 @@ async function Footer({ lang }) {
                 </div>
             )}
 
-            <Link href={"/"} className='text-center flex justify-center items-center mb-5 underline'>HousePointEgypt.com© 2023</Link>
+            <div className='flex justify-center items-center'>
+
+            <Link href={"/"} className='text-center  mb-5 underline'>HousePointEgypt.com© 2023</Link>
+            </div>
+
 
         </footer>
     )

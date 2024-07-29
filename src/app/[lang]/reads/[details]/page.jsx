@@ -73,6 +73,13 @@ async function page({ params }) {
 
   return (
     <>
+      <meta name='robots' content='noindex, nofollow' />
+      <link
+        rel='canonical'
+        href={process.env.mainUrl + `/reads/${params.detail}`}
+        key='canonical'
+        title='House Point Egypt Home Page'
+      />
       <main className='p-2 md:p-5'>
         {details?.status && (
           <>

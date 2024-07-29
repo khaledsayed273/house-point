@@ -110,47 +110,56 @@ async function page({ params }) {
     const [articles, topics, tags, pageTitle] = await Promise.all([articlesApi, topicsApi, tagsApi, pageTitleApi])
 
     return (
-        <main className='p-2 md:p-5'>
-            {articles?.status && (
-                <div className='grid lg:grid-cols-3 xl:grid-cols-4 gap-5 '>
-                    <div className='lg:col-span-2 xl:col-span-3'>
-                        <h1 className='text-xl font-semibold md:text-3xl border-b border-gray-500 mb-5 pb-5'>{pageTitle?.data?.title}</h1>
-                        <h2>Explore the real estate world, where we offer you rich and diverse content that caters to all your needs and curiosity about real estate. Here, you will find our articles covering various aspects of the real estate market, ranging from tips for real estate investment planning to the latest trends in home design and interior decor.</h2>
-                        <div className='grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-7'>
-                            {articles?.data.map((item, index) => (
+        <>
+            <meta name='robots' content='index, follow' />
+            <link
+                rel='canonical'
+                href={process.env.mainUrl + '/articles'}
+                key='canonical'
+                title='House Point Egypt - Real Estate | Logo'
+            />
+            <main className='p-2 md:p-5'>
+                {articles?.status && (
+                    <div className='grid lg:grid-cols-3 xl:grid-cols-4 gap-5 '>
+                        <div className='lg:col-span-2 xl:col-span-3'>
+                            <h1 className='text-xl font-semibold md:text-3xl border-b border-gray-500 mb-5 pb-5'>{pageTitle?.data?.title}</h1>
+                            <h2>Explore the real estate world, where we offer you rich and diverse content that caters to all your needs and curiosity about real estate. Here, you will find our articles covering various aspects of the real estate market, ranging from tips for real estate investment planning to the latest trends in home design and interior decor.</h2>
+                            <div className='grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-7'>
+                                {articles?.data.map((item, index) => (
 
-                                <Articles lang={params.lang} key={index} item={item} translate={translate} />
-                            ))}
+                                    <Articles lang={params.lang} key={index} item={item} translate={translate} />
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <div className='bg-[#e5e7eb] p-2 md:p-3'>
-                            {topics?.status && (
-                                <>
-                                    <h3 className='text-xl font-semibold mb-3'>Articles Topics</h3>
-                                    {topics?.data.map((item, index) => (
-                                        <Link className='bg-custom-blue-light text-white block text-center py-1 rounded-sm mb-2 hover:opacity-70' key={index} href={`/${params.lang}/reads/topics/${item.slug}`}>{item.name}</Link>
+                        <div>
+                            <div className='bg-[#e5e7eb] p-2 md:p-3'>
+                                {topics?.status && (
+                                    <>
+                                        <h3 className='text-xl font-semibold mb-3'>Articles Topics</h3>
+                                        {topics?.data.map((item, index) => (
+                                            <Link className='bg-custom-blue-light text-white block text-center py-1 rounded-sm mb-2 hover:opacity-70' key={index} href={`/${params.lang}/reads/topics/${item.slug}`}>{item.name}</Link>
 
-                                    ))}
-                                </>
-                            )}
-
-                            <FeatureProperties lang={params.lang} baseUrl={baseUrl} translate={translate} />
-                            {tags?.status && (
-                                <div>
-                                    <h3 className='text-xl font-semibold mb-3'>Articles Tags</h3>
-                                    <div className='flex flex-wrap gap-3'>
-                                        {tags?.data?.map((item, index) => (
-                                            <Link key={index} className='bg-[#095668] text-white py-1 px-2.5 rounded-md hover:opacity-80' href={`/${params.lang}/reads/tags/${item.slug}`}># {item.name}</Link>
                                         ))}
+                                    </>
+                                )}
+
+                                <FeatureProperties lang={params.lang} baseUrl={baseUrl} translate={translate} />
+                                {tags?.status && (
+                                    <div>
+                                        <h3 className='text-xl font-semibold mb-3'>Articles Tags</h3>
+                                        <div className='flex flex-wrap gap-3'>
+                                            {tags?.data?.map((item, index) => (
+                                                <Link key={index} className='bg-[#095668] text-white py-1 px-2.5 rounded-md hover:opacity-80' href={`/${params.lang}/reads/tags/${item.slug}`}># {item.name}</Link>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </main>
+                )}
+            </main>
+        </>
     )
 }
 

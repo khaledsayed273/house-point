@@ -58,7 +58,7 @@ function MoreImages({ details }) {
                         {details.images.map((item, index) => (
                             <div
                                 key={index}
-                                className='relative h-[250px] sm:h-[350px] lg:h-[300px] xl:h-[400px] overflow-hidden rounded-lg'
+                                className='relative h-[300px] sm:h-[350px] lg:h-[300px] xl:h-[400px] overflow-hidden rounded-lg'
                             >
                                 <Image
                                     blurDataURL={item.placeholder}

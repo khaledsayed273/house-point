@@ -157,13 +157,29 @@ const getSubArea = async (baseUrl, lang, type, slug, area, subarea, searchParams
   }
 }
 
+const getPageTitle = async (baseUrl, type, slug, lang) => {
+  try {
+    const res = await fetch(`${baseUrl}/pagetitles?link=/${type}/${slug}`, {
+      headers: {
+        "X-localization": lang
+      },
+      cache: 'no-store'
+    })
+    const data = await res.json()
+    return data
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 async function page({ params, searchParams }) {
   const baseUrl = process.env.baseUrl
+  const mainUrl = process.env.mainUrl
 
   const translate = await getDictionary(params.lang)
 
   const data = await getSubArea(baseUrl, params.lang, params.type, params.slug, params.area, params.subarea, searchParams)
+  const pageTitle = await getPageTitle(baseUrl, params.type, params.slug, params.lang)
 
 
 
@@ -172,14 +188,14 @@ async function page({ params, searchParams }) {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     '@id': 'mainEntity',
-    url: `${baseUrl}/${params.type}`,
+    url: `${mainUrl}/${params.type}`,
     itemListElement: data?.data?.data?.map((property, index) => ({
       '@type': `${property.title.slice(0, -1)}`,
       '@id': `ReferenceNumber:${property.refNumber}`,
       name: `${property.title}`,
       image: `${baseUrl}/original/${property.image.image}`,
-      url: `${baseUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
-      tourBookingPage: `${baseUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+      url: `${mainUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+      tourBookingPage: `${mainUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
       address: `${property.subarea.name}, ${property.area}, EG`,
       telephone: '+201221409530',
       floorSize: 'QuantitativeValue',
@@ -210,11 +226,16 @@ async function page({ params, searchParams }) {
 
 
 
-
-
   if (data?.status) {
     return (
       <>
+        <meta name='robots' content='index, follow' />
+        <link
+          rel='canonical'
+          href={`${mainUrl}/${params.lang}/${params.type}/${params.slug}/${params.area}/${params.subarea}`}
+          key='canonical'
+          title='House Point Egypt - Real Estate'
+        />
         <Script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
@@ -227,6 +248,8 @@ async function page({ params, searchParams }) {
           <SearchBar lang={params.lang} baseUrl={baseUrl} data={data.data} params={params} translate={translate} />
           {data.data.data.length !== 0 ? (
             <div>
+              <h2 className="text-center my-5 md:text-2xl font-medium">{pageTitle?.data?.title}</h2>
+              <p className="text-center my-5 md:text-lg font-base">{translate.general.components.searchbar.searchReads}</p>
               <Section lang={params.lang} translate={translate} data={data.data} />
               <Pagination lang={params.lang} data={data.data} />
 

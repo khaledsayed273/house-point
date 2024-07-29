@@ -7,7 +7,7 @@ import Pagination from '../../components/Pagination'
 import Script from 'next/script'
 
 
-export async function generateMetadata({ params , searchParams }) {
+export async function generateMetadata({ params, searchParams }) {
 
     const url = process.env.baseUrl
 
@@ -77,25 +77,44 @@ const getData = async (baseUrl, slug, lang, page) => {
     }
 }
 
+const getPageTitle = async (baseUrl, type, lang) => {
+    try {
+        const res = await fetch(`${baseUrl}/pagetitles?link=/${type}/properties`, {
+            headers: {
+                "X-localization": lang
+            },
+            cache: 'no-store'
+        })
+        const data = await res.json()
+        return data
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+
 async function page({ params, searchParams }) {
     const translate = await getDictionary(params.lang)
     const baseUrl = process.env.baseUrl
+    const mainUrl = process.env.mainUrl
     const req = await getData(baseUrl, params.type, params.lang, searchParams.page)
+    const pageTitle = await getPageTitle(baseUrl, params.type, params.lang,)
     const data = await req?.data
+
 
 
     const itemListSchema = {
         '@context': 'https://schema.org',
         '@type': 'ItemList',
         '@id': 'mainEntity',
-        url: `${baseUrl}/${params.type}`,
+        url: `${mainUrl}/${params.type}`,
         itemListElement: data?.data?.map((property, index) => ({
             '@type': `${property.title.slice(0, -1)}`,
             '@id': `ReferenceNumber:${property.refNumber}`,
             name: `${property.title}`,
             image: `${baseUrl}/original/${property.image.image}`,
-            url: `${baseUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
-            tourBookingPage: `${baseUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+            url: `${mainUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+            tourBookingPage: `${mainUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
             address: `${property.subarea.name}, ${property.area}, EG`,
             telephone: '+201221409530',
             floorSize: 'QuantitativeValue',
@@ -126,6 +145,13 @@ async function page({ params, searchParams }) {
 
     return (
         <>
+            <meta name='robots' content='index, follow' />
+            <link
+                rel='canonical'
+                href={`${mainUrl}/${params.lang}/${params.type}/properties`}
+                key='canonical'
+                title='House Point Egypt - Real Estate'
+            />
             <Script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
@@ -137,9 +163,14 @@ async function page({ params, searchParams }) {
             <main>
                 <SearchBar lang={params.lang} baseUrl={baseUrl} data={data} params={params} translate={translate} />
                 {req?.status && (
-                    <Section lang={params.lang} data={data} translate={translate} />
+                    <div>
+                        <h2 className="text-center my-5 md:text-2xl font-medium">{pageTitle?.data?.title}</h2>
+                        <p className="text-center my-5 md:text-lg font-base">{translate.general.components.searchbar.searchReads}</p>
+
+                        <Section lang={params.lang} data={data} translate={translate} params={params} />
+                    </div>
                 )}
-                <Pagination  data={data} />
+                <Pagination data={data} />
 
             </main>
         </>

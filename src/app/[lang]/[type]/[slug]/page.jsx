@@ -145,10 +145,27 @@ const getData = async (baseUrl, type, slug, min, max, minPropertyArea, maxProper
   }
 }
 
+const getPageTitle = async (baseUrl, type, slug, lang) => {
+  try {
+    const res = await fetch(`${baseUrl}/pagetitles?link=/${type}/${slug}`, {
+      headers: {
+        "X-localization": lang
+      },
+      cache: 'no-store'
+    })
+    const data = await res.json()
+    return data
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export default async function Slug({ params, searchParams }) {
   const translate = await getDictionary(params.lang)
   const baseUrl = process.env.baseUrl
+  const mainUrl = process.env.mainUrl
   const req = await getData(baseUrl, params.type, params.slug, searchParams.minPrice, searchParams.maxPrice, searchParams.minPropertyArea, searchParams.maxPropertyArea, searchParams.beds, searchParams.baths, searchParams.furnitureSetting, params.lang, searchParams.page)
+  const pageTitle = await getPageTitle(baseUrl, params.type, params.slug, params.lang)
   const data = await req?.data
 
 
@@ -156,14 +173,14 @@ export default async function Slug({ params, searchParams }) {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     '@id': 'mainEntity',
-    url: `${baseUrl}/${params.type}`,
+    url: `${mainUrl}/${params.type}`,
     itemListElement: data?.data?.map((property, index) => ({
       '@type': `${property.title.slice(0, -1)}`,
       '@id': `ReferenceNumber:${property.refNumber}`,
       name: `${property.title}`,
       image: `${baseUrl}/original/${property.image.image}`,
-      url: `${baseUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
-      tourBookingPage: `${baseUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+      url: `${mainUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
+      tourBookingPage: `${mainUrl}/${property.title.toLowerCase()}/${property.area}/${property.subarea.name.toLowerCase()}/${property.title.toLowerCase()}-${property.refNumber}`,
       address: `${property.subarea.name}, ${property.area}, EG`,
       telephone: '+201221409530',
       floorSize: 'QuantitativeValue',
@@ -190,9 +207,15 @@ export default async function Slug({ params, searchParams }) {
     },
   }));
 
-
   return (
     <>
+      <meta name='robots' content='index, follow' />
+      <link
+        rel='canonical'
+        href={`${mainUrl}/${params.lang}/${params.type}/${params.slug}`}
+        key='canonical'
+        title='House Point Egypt - Real Estate'
+      />
       <Script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
@@ -205,7 +228,11 @@ export default async function Slug({ params, searchParams }) {
         <SearchBar lang={params.lang} baseUrl={baseUrl} data={data} params={params} translate={translate} />
         {req?.status && (
           data.data.length > 0 ? (
-            <Section lang={params.lang} data={data} translate={translate} />
+            <>
+              <h2 className="text-center my-5 md:text-2xl font-medium">{pageTitle?.data?.title}</h2>
+              <p className="text-center my-5 md:text-lg font-base">{translate.general.components.searchbar.searchReads}</p>
+              <Section lang={params.lang} data={data} translate={translate} />
+            </>
           ) : (
             <h1 className="text-center mt-44 font-semibold text-lg md:text-xl">Sorry there is no data</h1>
           )
