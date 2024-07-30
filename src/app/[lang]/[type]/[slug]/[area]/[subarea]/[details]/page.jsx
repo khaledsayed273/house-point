@@ -140,9 +140,9 @@ async function page({ params }) {
                             <h1 className='text-xl text-center lg:text-start md:text-3xl xl:text-4xl font-semibold capitalize'>
                                 {details.property.title}
                             </h1>
-                            <p className='text-sm md:text-base mt-4 font-medium text-center lg:text-start capitalize'>
+                            <h2 className='text-sm md:text-base mt-4 font-medium text-center lg:text-start capitalize'>
                                 {details?.property?.category?.name} {params.lang === "en" ? "for " : "لل"}{details?.property?.type} {params.lang === "en" ? "in" : "في"} {details?.property?.areaLocation?.name} {details.property.subarea.name} {params.lang === "en" ? "area" : "منطقة"}: {details.property.area}  {params.lang === "en" ? "m² consists of" : "متر مربع تتكون من"} {details.property.beds} {translate.general.components.searchbar.beds} {details.property.baths} {translate.general.components.searchbar.baths} {details.property.furniture} {details.property.rate} {params.lang === "en" ? "stars" : "نجوم"}
-                            </p>
+                            </h2>
                         </div>
                         <div>
                             <p className='text-lg lg:text-2xl font-semibold text-center lg:text-start mb-2'>

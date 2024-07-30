@@ -39,8 +39,8 @@ export async function generateMetadata({ params, searchParams }) {
             title: `${data.data.meta.total} Property Type For ${params.type} in ${params.area} ,Cairo Egypt | House Point`,
             description: `${data.data.meta.total} Property Type For ${params.type} in ${params.area} ,Cairo Egypt | House Point`,
             openGraph: {
-                title: `${data.data.meta.total} Property Type For ${params.type} in ${params.area} ,Cairo Egypt | House Point`,
-                description: `${data.data.meta.total} Property Type For ${params.type} in ${params.area} ,Cairo Egypt | House Point`,
+                title: ` Property Type For ${params.type} in ${params.area} ,Cairo Egypt `,
+                description: ` Property Type For ${params.type} in ${params.area} ,Cairo Egypt`,
             },
             alternates: {
                 languages: {
@@ -219,8 +219,8 @@ async function page({ params, searchParams }) {
                     <SearchBar lang={params.lang} baseUrl={baseUrl} data={data.data} params={params} translate={translate} />
                     {data.data.data.length !== 0 ? (
                         <div>
-                            <h2 className="text-center my-5 md:text-2xl font-medium">{pageTitle?.data?.title}</h2>
-                            <p className="text-center my-5 md:text-lg font-base">{translate.general.components.searchbar.searchReads}</p>
+                            <h1 className="text-center my-5 md:text-2xl font-medium">{pageTitle?.data?.title}</h1>
+                            <h2 className="text-center my-5 md:text-lg font-base">{translate.general.components.searchbar.searchReads}</h2>
 
                             <Section lang={params.lang} translate={translate} data={data.data} />
                             <Pagination lang={params.lang} data={data.data} />

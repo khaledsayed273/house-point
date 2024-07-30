@@ -115,6 +115,8 @@ export default async function RootLayout({ children, params }) {
         <meta name='twitter:site' content='@HousePointE' />
         <meta name='twitter:creator' content='@HousePointE' />
         <meta name='twitter:domain' content={mainUrl} />
+        <meta property='twitter:image' content={mainUrl + "/images/HPlogo.png"} />
+
         <meta
           property="og:image"
           content={mainUrl + "/images/HPlogo.png"}

@@ -43,8 +43,8 @@ export async function generateMetadata({ params, searchParams }) {
             description: `${data.data.meta.total} ${metaLink.description}`,
             keywords: keywords,
             openGraph: {
-                title: `${data.data.meta.total} ${metaLink.title}`,
-                description: `${data.data.meta.total} ${metaLink.description}`,
+                title: `${metaLink.title}`,
+                description: `${metaLink.description}`,
                 keywords: keywords,
             },
             alternates: {
@@ -207,8 +207,8 @@ async function page({ params, searchParams }) {
                 <SearchBar lang={params.lang} baseUrl={baseUrl} data={data} params={params} translate={translate} />
                 {req?.status && (
                     <div>
-                        <h2 className="text-center my-5 md:text-2xl font-medium">{pageTitle?.data?.title}</h2>
-                        <p className="text-center my-5 md:text-lg font-base">{translate.general.components.searchbar.searchReads}</p>
+                        <h1 className="text-center my-5 md:text-2xl font-medium">{pageTitle?.data?.title}</h1>
+                        <h2 className="text-center my-5 md:text-lg font-base">{translate.general.components.searchbar.searchReads}</h2>
                         <Section lang={params.lang} data={data} translate={translate} params={params} />
                     </div>
                 )}

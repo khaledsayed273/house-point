@@ -83,8 +83,8 @@ export async function generateMetadata({ params, searchParams }) {
       description: `${data.data.meta.total} ${metaLink.description}`,
       keywords: keywords,
       openGraph: {
-        title: `${data.data.meta.total} ${metaLink.title}`,
-        description: `${data.data.meta.total} ${metaLink.description}`,
+        title: `${metaLink.title}`,
+        description: `${metaLink.description}`,
         keywords: keywords
       },
       alternates: {
