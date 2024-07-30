@@ -17,7 +17,7 @@ function SlickAutoPlay({ lang, related, translate }) {
         responsive: [
 
             {
-                breakpoint: 1550,
+                breakpoint: 1150,
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 3,
