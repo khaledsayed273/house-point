@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/inline-script-id */
 /* eslint-disable @next/next/next-script-for-ga */
 import { Inter, } from "next/font/google";
 import "./globals.css";
@@ -7,6 +8,7 @@ import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import Error from "./error";
 import Footer from "./components/Footer";
 import ProviderContext from "@/store/store";
+import Script from "next/script";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -130,7 +132,8 @@ export default async function RootLayout({ children, params }) {
           content={mainUrl + "/images/HPlogo.png"}
         />
         <meta property="og:type" content="website" />
-        <script
+        <Script
+          strategy="afterInteractive"
           id="google-tag-manager"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -140,7 +143,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-TGDM45Z');`,
           }}
         />
-        <script
+        <Script
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
@@ -149,20 +153,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           gtag('config', 'G-XBCPETJP67');`,
           }}
         />
-        <script
+        <Script
+          strategy="afterInteractive"
           async
           src='https://www.googletagmanager.com/gtag/js?id=G-XBCPETJP67'
         />
 
-        <script
+        <Script
+          strategy="afterInteractive"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
-        <script
+        <Script
+          strategy="afterInteractive"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
-        <script
+        <Script
+          strategy="afterInteractive"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(realSchema) }}
         />

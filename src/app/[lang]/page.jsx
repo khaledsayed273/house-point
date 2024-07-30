@@ -208,18 +208,22 @@ export default async function Home({ params }) {
 
     <>
       <Script
+        strategy="afterInteractive"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchemaSale) }}
       />
       <Script
+        strategy="afterInteractive"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchemaRent) }}
       />
       <Script
+        strategy="afterInteractive"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchemaRent) }}
       />
       <Script
+        strategy="afterInteractive"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchemaSale) }}
       />
