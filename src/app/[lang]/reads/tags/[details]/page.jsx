@@ -1,46 +1,61 @@
+/* eslint-disable @next/next/inline-script-id */
 import React from 'react'
 import Link from 'next/link'
 import Articles from '../../components/Articles'
 import { getDictionary } from '@/app/[lang]/dictionaries'
 import FeatureProperties from '../../components/FeatureProperties'
-
-
+import Script from 'next/script'
+import { htmlToText } from 'html-to-text'
 
 
 export async function generateMetadata({ params }) {
     const url = process.env.baseUrl
+
+    const getDetailsApi = await fetch(`${url}/tags/${params.details}`, {
+        headers: {
+            "X-localization": params.lang
+        },
+        cache: 'no-store'
+    })
+
+    const getDetails = await getDetailsApi.json()
+
+    const getMetaDataApi = await fetch(`${url}/metalinks?link=/reads/tags/${params.details}`, {
+        headers: {
+            "X-localization": params.lang
+        },
+        cache: 'no-store'
+    })
+
+    const getMetaData = await getMetaDataApi.json()
+
+    const keywords = getMetaData?.keywords?.split(",")
+
     try {
-        const res = await fetch(`${url}/tags/${params.details}`, {
-            headers: {
-                "X-localization": params.lang
-            },
-            cache: 'no-store'
-        })
-        const data = await res.json()
-        const details = await data.data
         return {
-            title: details.name,
-            description: details.description,
+            title: getMetaData.data.title,
+            description: getMetaData.data.description,
+            keywords: keywords,
             openGraph: {
-                title: details.name,
-                description: details.description,
+                title: getMetaData.data.title,
+                description: getMetaData.data.description,
+                keywords: keywords,
             },
         }
+
     } catch (e) {
         return {
-            title: "House Point",
-            description: "House Point",
+            title: `${getDetails.data.name} | Article Tag`,
+            description: `${getDetails.data.description} | Article Tag`,
+            keywords: getDetails.data.name,
             openGraph: {
-                title: "",
-                description: "House Point",
+                title: `${getDetails.data.name} | Article Tag`,
+                description: `${getDetails.data.description} | Article Tag`,
+                keywords: getDetails.data.name,
             },
         }
     }
 }
-
-
-
-
 
 const getTagDetails = async (lang, baseUrl, details) => {
     try {
@@ -90,15 +105,70 @@ const getTags = async (lang, baseUrl) => {
 
 async function page({ params }) {
     const baseUrl = process.env.baseUrl
+    const WEBSITE_BASE_URL = process.env.mainUrl
     const translate = await getDictionary(params.lang)
     const tagsDetailsApi = getTagDetails(params.lang, baseUrl, params.details)
     const topicsApi = getTopics(params.lang, baseUrl)
     const tagsApi = getTags(params.lang, baseUrl)
     const [tagDetails, topics, tags] = await Promise.all([tagsDetailsApi, topicsApi, tagsApi])
 
+
+    const cleanDescription = (htmlContent) => {
+        const plainText = htmlToText(htmlContent)
+            .replace(/<p>/g, '')
+            .replace(/<\/p>/g, '')
+            .replace(/&nbsp;/g, ' ');
+
+        return plainText.length > 150 ? plainText.slice(0, 150) + '...' : plainText;
+    };
+
+    const itemListSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        '@id': 'mainEntity',
+        url: WEBSITE_BASE_URL + '/reads',
+        itemListElement: tagDetails?.data?.articles?.map((post) => {
+            return {
+                '@context': 'https://schema.org',
+                '@type': 'NewsArticle',
+                headline: `${post.title}`,
+                image: process.env.BLOG_IMAGE_BASE_URL + post.image,
+                datePublished: `${post.created_at}`,
+                dateModified: `${post.updated_at}` || `${post.created_at}`,
+                mainEntityOfPage:
+                    WEBSITE_BASE_URL + `/reads/${post.slug}`,
+                description: cleanDescription(post.description),
+                author: `${post.writer}`,
+                publisher: 'HousePointEgyptOrganization',
+            };
+        }),
+    };
+
+
     return (
         <>
+            <Script
+                type='application/ld+json'
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+            />
             <meta name='robots' content='noindex, nofollow' />
+            <meta
+                property='og:url'
+                content={process.env.mainUrl + `/reads/tags/${params.details}`}
+            />
+            <link
+                rel='alternate'
+                hrefLang='ar'
+                href={process.env.mainUrl + `/ar/reads/tags/${params.details}`}
+                title='House Point Egypt - Real Estate | Reads'
+            />
+            <link
+                rel='alternate'
+                hrefLang='x-default'
+                href={process.env.mainUrl + `/reads/tags/${params.details}`}
+                title='House Point Egypt - Real Estate | Reads'
+            />
+
             <link
                 rel='canonical'
                 href={process.env.mainUrl + `/reads/tags/${params.details}`}

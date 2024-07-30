@@ -23,12 +23,12 @@ function Form({ refNumber, baseUrl }) {
                     <Image src={phoneIcon} width={22} className='me-2' alt='phone' />
                     call
                 </Link>
-                <Link target='_blank' className='bg-custom-blue text-white flex items-center justify-center py-2 text-xl capitalize rounded-lg hover:opacity-80' href={"mailto:Info@housepointegypt.com"}>
+                <button className='bg-custom-blue text-white flex items-center justify-center py-2 text-xl capitalize rounded-lg hover:opacity-80' >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 me-2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                     </svg>
                     email
-                </Link>
+                </button>
                 <Link target='_blank' className='bg-green-600 text-white  py-2 text-xl flex items-center justify-center capitalize rounded-lg hover:opacity-80' href={`https://api.whatsapp.com/send?phone=01221409530&text=${message}`}>
                     <Image src={whatsAppIcon} width={22} className='me-2' alt='whatsapp' />
                     whats app

@@ -106,7 +106,7 @@ export default async function Home({ params }) {
   const primeLocationApi = getLocations(params.lang, process.env.baseUrl)
   const socialApi = getSocial(params.lang, process.env.baseUrl)
   const [data, toplinks, primeLocations] = await Promise.all([dataApi, linksApi, primeLocationApi, socialApi])
-
+  const WEBSITE_BASE_URL = process.env.mainUrl
 
   const itemListSchemaSale = {
     '@context': 'https://schema.org',
@@ -224,14 +224,29 @@ export default async function Home({ params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchemaSale) }}
       />
 
+      <meta name='robots' content='index, follow' />
+
+      <meta property='og:url' content={WEBSITE_BASE_URL} />
+      <link
+        rel='alternate'
+        hrefLang='x-default'
+        href={WEBSITE_BASE_URL + `/`}
+        title='House Point Egypt - Real Estate | Home'
+      />
+      <link
+        rel='alternate'
+        hrefLang='ar'
+        href={WEBSITE_BASE_URL + `/ar/`}
+        title='House Point Egypt - Real Estate | الصفحة الرئيسية'
+      />
+      <link
+        rel='canonical'
+        href={`${WEBSITE_BASE_URL}/${params.lang}`}
+        key='canonical'
+        title='House Point Egypt - Real Estate | Home'
+      />
+
       <main>
-        <meta name='robots' content='index, follow' />
-        <link
-          rel='canonical'
-          href={process.env.mainUrl}
-          key='canonical'
-          title='House Point Egypt - Real Estate | Home'
-        />
         <Header translate={translate} lang={params.lang} />
         {data?.status && (
           <>

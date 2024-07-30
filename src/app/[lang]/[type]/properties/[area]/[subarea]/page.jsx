@@ -3,6 +3,7 @@ import SearchBar from '@/app/[lang]/components/home/header/SearchBar';
 import Section from '@/app/[lang]/components/home/Section';
 import Pagination from '@/app/[lang]/components/Pagination';
 import { getDictionary } from '@/app/[lang]/dictionaries';
+import Link from 'next/link';
 import Script from 'next/script';
 import React from 'react'
 
@@ -10,6 +11,7 @@ export async function generateMetadata({ params }) {
 
   let queryString = ""
   const baseUrl = process.env.baseUrl;
+  const mainUrl = process.env.mainUrl;
 
   if (params.type !== null && params.type !== undefined) {
     queryString += `filter[type]=${params.type}&`;
@@ -42,8 +44,16 @@ export async function generateMetadata({ params }) {
       description: `${data.data.meta.total} Property Type For ${params.type} in ${params.area}, ${params.subarea} ,Cairo Egypt | House Point`,
       openGraph: {
         title: `${data.data.meta.total} Property Type For ${params.type} in ${params.area}, ${params.subarea} ,Cairo Egypt | House Point`,
-        // images: `${data.data.meta.total} ${params.slug} For ${params.type} in Cairo Egypt`,
         description: `${data.data.meta.total} Property Type For ${params.type} in ${params.area}, ${params.subarea} ,Cairo Egypt | House Point`,
+      },
+      alternates: {
+        languages: {
+          'x-default': `${mainUrl}/en/${params.type}/properties/${params.area}/${params.subarea}`,
+          'ar': `${mainUrl}/ar/${params.type}/properties/${params.area}/${params.subarea}`,
+        },
+        types: {
+          'application/rss+xml': `${mainUrl}/rss`,
+        },
       },
     }
 
@@ -161,6 +171,8 @@ async function page({ params, searchParams }) {
     return (
       <>
         <meta name='robots' content='index, follow' />
+        <meta property="og:url" content={`${mainUrl}/${params.lang}/${params.type}/properties/${params.area}/${params.subarea}`} />
+
         <link
           rel='canonical'
           href={`${mainUrl}/${params.lang}/${params.type}/properties/${params.area}/${params.subarea}`}
@@ -176,6 +188,37 @@ async function page({ params, searchParams }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchema) }}
         />
         <main>
+          <div className='p-2 ms-5 mt-3 flex items-center capitalize  text-sm'>
+            <Link href={"/"}>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+              </svg>
+            </Link>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4 mx-0.5 rtl:rotate-180">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+            <Link className='underline' href={`/${params.lang}/${params.type}/properties`}>
+              {params.type}
+            </Link>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4 mx-0.5 rtl:rotate-180">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+            <Link className='underline' href={`/${params.lang}/${params.type}/${params.slug}`}>
+              {params.slug}
+            </Link>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4 mx-0.5 rtl:rotate-180">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+            <Link className='underline' href={`/${params.lang}/${params.type}/${params.slug}/${params.area}`}>
+              {params.area}
+            </Link>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="size-4 mx-0.5 rtl:rotate-180">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+            <Link className='underline' href={`/${params.lang}/${params.type}/${params.slug}/${params.area}/${params.subarea}`}>
+              {params.subarea}
+            </Link>
+          </div>
           <SearchBar lang={params.lang} baseUrl={baseUrl} data={data.data} params={params} translate={translate} />
           {data.data.data.length !== 0 ? (
             <div>

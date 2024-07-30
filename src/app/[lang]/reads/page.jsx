@@ -1,8 +1,10 @@
+/* eslint-disable @next/next/inline-script-id */
 import React from 'react'
 import Articles from './components/Articles'
 import { getDictionary } from '../dictionaries'
 import Link from 'next/link'
 import FeatureProperties from './components/FeatureProperties'
+import Script from 'next/script'
 
 
 export async function generateMetadata({ params }) {
@@ -19,11 +21,11 @@ export async function generateMetadata({ params }) {
         const keywords = details.keywords.split(",")
         return {
             title: details.title,
-            description: details.title,
+            description: details.description,
             keywords: keywords,
             openGraph: {
                 title: details.title,
-                description: details.title,
+                description: details.description,
                 keywords: keywords,
             },
         }
@@ -109,12 +111,55 @@ async function page({ params }) {
     const pageTitleApi = getPageTitle(params.lang, baseUrl)
     const [articles, topics, tags, pageTitle] = await Promise.all([articlesApi, topicsApi, tagsApi, pageTitleApi])
 
+
+    const itemListSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        '@id': 'mainEntity',
+        url: baseUrl + '/reads',
+        itemListElement: articles?.data?.map((post) => {
+            return {
+                '@context': 'https://schema.org',
+                '@type': 'NewsArticle',
+                headline: `${post.title}`,
+                image: process.env.mainUrl + post.image.image,
+                datePublished:`${post.created_at}`,
+                dateModified: `${post.created_at}`,
+                mainEntityOfPage:
+                baseUrl + `/reads/${post.title.replaceAll(' ', '-')}`,
+                author: `${post.writer}`,
+                publisher: 'HousePointEgyptOrganization',
+            };
+        }),
+    };
+
     return (
         <>
+            <Script
+                type='application/ld+json'
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+            />
             <meta name='robots' content='index, follow' />
+
+            <meta
+                property='og:url'
+                content={`${process.env.mainUrl}/${params.lang}/reads`}
+            />
+            <link
+                rel='alternate'
+                hrefLang='ar'
+                href={process.env.mainUrl + `/ar/reads`}
+                title='House Point Egypt - Real Estate | Reads'
+            />
+            <link
+                rel='alternate'
+                hrefLang='x-default'
+                href={process.env.mainUrl + '/reads'}
+                title='House Point Egypt - Real Estate | Reads'
+            />
             <link
                 rel='canonical'
-                href={process.env.mainUrl + '/articles'}
+                href={process.env.mainUrl + "/" + params.lang + '/reads'}
                 key='canonical'
                 title='House Point Egypt - Real Estate | Logo'
             />
