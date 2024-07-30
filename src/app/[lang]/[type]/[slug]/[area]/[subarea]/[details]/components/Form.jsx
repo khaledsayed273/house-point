@@ -9,11 +9,13 @@ import twitterIcon from "../../../../../../../../../public/assets/twitter.png"
 import linkedInIcon from "../../../../../../../../../public/assets/linkedin.png"
 import { useParams } from 'next/navigation';
 
-function Form({ refNumber, baseUrl }) {
+function Form({ refNumber, baseUrl , mainUrl }) {
 
     const params = useParams()
 
     let message = `Hi I found your property with Ref: ${refNumber} on House Point Egypt. Please Contact me, Thanks`
+
+    const link = `${mainUrl}/${params.type}/${params.slug}/${params.area}/${params.subarea}/${params.details}`
 
 
     return (
@@ -29,7 +31,7 @@ function Form({ refNumber, baseUrl }) {
                     </svg>
                     email
                 </button>
-                <Link target='_blank' className='bg-green-600 text-white  py-2 text-xl flex items-center justify-center capitalize rounded-lg hover:opacity-80' href={`https://api.whatsapp.com/send?phone=01221409530&text=${message}`}>
+                <Link target='_blank' className='bg-green-600 text-white  py-2 text-xl flex items-center justify-center capitalize rounded-lg hover:opacity-80' href={`https://api.whatsapp.com/send?phone=+201221409530&text=${encodeURI(message)} ${link}`}>
                     <Image src={whatsAppIcon} width={22} className='me-2' alt='whatsapp' />
                     whats app
                 </Link>
@@ -38,16 +40,16 @@ function Form({ refNumber, baseUrl }) {
             <div className='mt-3'>
                 <h3 className='mb-2 text-lg'>Share On</h3>
                 <div className='grid sm:grid-cols-2 md:grid-cols-4 gap-2 '>
-                    <Link className='bg-[#3f53b7] py-1 flex items-center justify-center rounded-lg hover:opacity-80' target='_blank' href={`https://www.facebook.com/sharer.php?u=${baseUrl}/${params.type}/${params.slug}/${params.area}/${params.subarea}/${params.details}`}>
+                    <Link className='bg-[#3f53b7] py-1 flex items-center justify-center rounded-lg hover:opacity-80' target='_blank' href={`https://www.facebook.com/sharer.php?u=${link}`}>
                         <Image src={faceIcon} width={30} alt='facebook' />
                     </Link>
-                    <Link className='bg-[#04a7ef] py-1 flex items-center justify-center rounded-lg hover:opacity-80' target='_blank' href={`https://twitter.com/intent/tweet?text=&amp;url=${baseUrl}/${params.type}/${params.slug}/${params.area}/${params.subarea}/${params.details}`}>
+                    <Link className='bg-[#04a7ef] py-1 flex items-center justify-center rounded-lg hover:opacity-80' target='_blank' href={`https://twitter.com/intent/tweet?text=&amp;url=${link}`}>
                         <Image src={twitterIcon} width={30} alt='twitter' />
                     </Link>
-                    <Link className='bg-[#0376df] py-1 flex items-center justify-center  rounded-lg hover:opacity-80' target='_blank' href={`"https://www.linkedin.com/shareArticle?mini=true&amp;url=${baseUrl}/${params.type}/${params.slug}/${params.area}/${params.subarea}/${params.details}`}>
+                    <Link className='bg-[#0376df] py-1 flex items-center justify-center  rounded-lg hover:opacity-80' target='_blank' href={`"https://www.linkedin.com/shareArticle?mini=true&amp;url=${link}`}>
                         <Image src={linkedInIcon} width={30} alt='linkedIn' />
                     </Link>
-                    <Link className='bg-green-600 py-1 flex items-center justify-center rounded-lg hover:opacity-80' target='_blank' href={`https://web.whatsapp.com/send?text=${baseUrl}/${params.type}/${params.slug}/${params.area}/${params.subarea}/${params.details}`}>
+                    <Link className='bg-green-600 py-1 flex items-center justify-center rounded-lg hover:opacity-80' target='_blank' href={`https://web.whatsapp.com/send?text=${message}`}>
                         <Image src={whatsAppIcon} width={25} alt='whatsapp' />
                     </Link>
                 </div>
