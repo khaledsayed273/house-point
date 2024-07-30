@@ -196,10 +196,10 @@ async function page({ params }) {
                         <div className="py-4 lg:col-span-2 2xl:col-span-3">
                             <div className="grid h-[500px] md:h-[700px] 2xl:grid-rows-4 2xl:grid-flow-col gap-2">
                                 <div className="relative row-span-4 col-span-2">
-                                    <Image priority src={details.property.images[0].image} alt="1" sizes="(min-width: 808px) 50vw, 100vw" fill />
+                                    <Image priority src={details.property.images[0].image} alt="Image_Of_Property" title='Image_Of_Property' sizes="(min-width: 808px) 50vw, 100vw" fill />
                                 </div>
                                 <div className="relative row-span-2">
-                                    <Image blurDataURL={details.property.images[1].placeholder} placeholder='blur' src={details.property.images[1].image} alt="2" sizes="(min-width: 808px) 50vw, 100vw" fill />
+                                    <Image blurDataURL={details.property.images[1].placeholder} placeholder='blur' src={details.property.images[1].image} alt="Image_Of_Property" title='Image_Of_Property'  sizes="(min-width: 808px) 50vw, 100vw" fill />
                                 </div>
                                 <MoreImages details={details.property} />
                             </div>

@@ -32,11 +32,11 @@ function MoreImages({ details }) {
                         <button onClick={handleShowPopUp} className='bg-black/70 absolute top-0 left-0 bottom-0 right-0 text-white z-10 text-xl font-bold'>
                             + {details.images.length}
                         </button>
-                        <Image sizes="(min-width: 808px) 50vw, 100vw" blurDataURL={details.images[1].placeholder} placeholder='blur' src={details.images[1].image} alt="1" fill />
+                        <Image sizes="(min-width: 808px) 50vw, 100vw" blurDataURL={details.images[1].placeholder} placeholder='blur' src={details.images[1].image} alt="Image_Of_Property" title='Image_Of_Property' fill />
                     </>
 
                 ) : (
-                    <Image blurDataURL={details.images[1].placeholder} placeholder='blur' src={details.images[1].image} alt="1" sizes="(min-width: 808px) 50vw, 100vw" fill />
+                    <Image blurDataURL={details.images[1].placeholder} placeholder='blur' src={details.images[1].image} alt="Image_Of_Property" title='Image_Of_Property'  sizes="(min-width: 808px) 50vw, 100vw" fill />
                 )}
             </div>
             <Dialog open={show} size={"xxl"} handler={handleShowPopUp}>
@@ -66,7 +66,8 @@ function MoreImages({ details }) {
                                     sizes="(min-width: 808px) 50vw, 100vw"
                                     src={item.image}
                                     fill
-                                    alt={`image-${index}`}
+                                    alt="Image_Of_Property" 
+                                    title='Image_Of_Property' 
                                 />
                             </div>
                         ))}
